@@ -2,8 +2,8 @@
 
 public interface IEnemy
 {
-    public int Health { get; set; }
-    public int Exp { get; set; }
-    public void DamageTaken(int damageTaken);
-    public void Attack();
+    int Health { get; set; }
+    int Exp { get; set; }
+    void DamageTaken(int damageTaken);
+    void Attack();
 }
