@@ -5,6 +5,8 @@ public class MediumMonsterController:MonoBehaviour,IEnemy
 {
     public int Health { get; set; }
     public int Exp { get; set; }
+    public int MovementSpeed { get; set; }
+    public int AttackSpeed { get; set; }
     public int CurrentHealth { get; set; }
     
         
