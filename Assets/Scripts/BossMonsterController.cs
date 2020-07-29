@@ -8,7 +8,7 @@
         public int Exp { get; set; }
         public int MovementSpeed { get; set; }
         public int AttackSpeed { get; set; }
-        public int CurrentHealth { get; set; }
+        private int CurrentHealth { get; set; }
         
         private void Awake()
         {

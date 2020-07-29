@@ -1,5 +1,7 @@
 
 
+using System;
+
 public interface IEnemy
 {
     int Health { get; set; }
@@ -7,6 +9,5 @@ public interface IEnemy
     int MovementSpeed { get; set; }
     int AttackSpeed { get; set; }
     void DamageTaken(int damageTaken);
-    
     void Attack();
 }
