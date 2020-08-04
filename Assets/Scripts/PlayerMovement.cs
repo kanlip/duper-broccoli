@@ -1,19 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
     protected Joystick joystick;
-    protected AttackButtonManager attackButton;
     
     public float movementSpeed = 10f;
 
     // Start is called before the first frame update
     void Start()
     {
+
+#if UNITY_ANDROID || UNITY_IOS
         joystick = FindObjectOfType<Joystick>();
-        attackButton = FindObjectOfType<AttackButtonManager>();
+#endif
     }
 
     // Update is called once per frame
