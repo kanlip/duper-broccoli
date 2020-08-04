@@ -15,6 +15,8 @@ public class HealthManager : MonoBehaviour
     private Text amountOfPotion;
     private int healthRestore = 10;
 
+    public GameObject gameOverPanel;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +26,7 @@ public class HealthManager : MonoBehaviour
 
         healthPotionButton = GameObject.FindWithTag("HealthPotion").GetComponent<Button>();
         amountOfPotion = GameObject.FindWithTag("HealthPotionAmount").GetComponent<Text>();
-       
+
         //display the amount of potion
         amountOfPotion.text = healthPotion.ToString();
       
@@ -46,6 +48,11 @@ public class HealthManager : MonoBehaviour
 
         Debug.Log("UPDATE: " + currentHealth);
 
+        //show the game over panel if user hp = 0
+        if (currentHealth <= 0)
+        {
+            gameOverPanel.gameObject.SetActive(true);
+        }
     }
 
     void clickRestoreHealth()

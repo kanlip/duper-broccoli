@@ -6,6 +6,10 @@ TagManager:
   tags:
   - HealthPotion
   - HealthPotionAmount
+  - GameOver
+  - FPS
+  - TPS
+  - SettingsPanel
   layers:
   - Default
   - TransparentFX
