@@ -44,11 +44,12 @@ public class MediumMonsterController:MonoBehaviour,IEnemy
     public void Attack()
     {
         enemyAnimator.SetTrigger(EnemyAnimation.Attack.ToString());
-        
     }
-
+    
     public void DamageTaken(int damageTaken)
     {
         if(CurrentHealth > 0) CurrentHealth -= damageTaken;
+        else enemyAnimator.SetTrigger(EnemyAnimation.Dead.ToString());
     }
 }
+
