@@ -6,14 +6,14 @@ using UnityEngine.UI;
 public class CameraController : MonoBehaviour
 
 {
-    public Camera mainCam;
-    public Camera fpsCam;
-    public Camera tpsCam;
+    public GameObject fpsCam;
+    public GameObject tpsCam;
 
     private Toggle fpsCamToggle;
     private Toggle tpsCamToggle;
 
     private GameObject settingsPanel;
+
 
     // Start is called before the first frame update
     void Start()
@@ -31,26 +31,23 @@ public class CameraController : MonoBehaviour
 
         if (fpsCamToggle.isOn == true && tpsCamToggle.isOn == true)
         {
-            mainCam.enabled = false;
-            fpsCam.enabled = true;
-            tpsCam.enabled = false;
+            fpsCam.SetActive(true);
+            tpsCam.SetActive(false);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-          if(fpsCamToggle.isOn == true && tpsCamToggle.isOn == false)
-          {
-                mainCam.enabled = false;
-                fpsCam.enabled = true;
-                tpsCam.enabled = false;
-          }
-          else if(tpsCamToggle.isOn == true && fpsCamToggle.isOn == false)
-          {
-                mainCam.enabled = false;
-                fpsCam.enabled = false;
-                tpsCam.enabled = true;
-          }
+        if(fpsCamToggle.isOn == true && tpsCamToggle.isOn == false)
+        {
+            fpsCam.SetActive(true);
+            tpsCam.SetActive(false);
+        }
+        else if(tpsCamToggle.isOn == true && fpsCamToggle.isOn == false)
+        {
+            fpsCam.SetActive(false);
+            tpsCam.SetActive(true);
+        }
     }  
 }

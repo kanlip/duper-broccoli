@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
-    protected Joystick joystick;
+    public Joystick joystick;
     
     public float movementSpeed = 10f;
 
@@ -13,9 +13,6 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
 
-#if UNITY_ANDROID || UNITY_IOS
-        joystick = FindObjectOfType<Joystick>();
-#endif
     }
 
     // Update is called once per frame
@@ -31,9 +28,9 @@ public class PlayerMovement : MonoBehaviour
 
 #if UNITY_ANDROID || UNITY_IOS
 
-         rigidBody.velocity = new Vector3(joystick.Horizontal * movementSpeed, 
-         rigidBody.velocity.y, joystick.Vertical * movementSpeed);
-
+        float touchMvX = joystick.Horizontal * Time.deltaTime * movementSpeed; 
+        float touchMvZ = joystick.Vertical * Time.deltaTime * movementSpeed; 
+        transform.Translate(touchMvX, 0, touchMvZ);
 #endif
     }
 }

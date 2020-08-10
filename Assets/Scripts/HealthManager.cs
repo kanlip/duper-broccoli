@@ -51,7 +51,8 @@ public class HealthManager : MonoBehaviour
         //show the game over panel if user hp = 0
         if (currentHealth <= 0)
         {
-            gameOverPanel.gameObject.SetActive(true);
+             gameOverPanel.gameObject.SetActive(true);
+             return;          
         }
     }
 
@@ -79,7 +80,6 @@ public class HealthManager : MonoBehaviour
             amountOfPotion.text = healthPotion.ToString();
         }
 
-        Debug.Log("RESTORE: " + currentHealth);
-        
+        Debug.Log("RESTORE: " + currentHealth);      
     }
 }

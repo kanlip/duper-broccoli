@@ -10,6 +10,9 @@ TagManager:
   - FPS
   - TPS
   - SettingsPanel
+  - FPSCam
+  - TPSCam
+  - RotateCam
   layers:
   - Default
   - TransparentFX
