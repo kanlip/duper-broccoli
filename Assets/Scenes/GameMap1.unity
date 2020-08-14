@@ -1638,7 +1638,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &1062702004
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3109,6 +3109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMovement: {fileID: 1097483840}
   mouseSensitivity: 100
+  cameraAngleSpeed: 80
   camJoystick: {fileID: 1493737016}
 --- !u!1001 &1678688840
 PrefabInstance:
@@ -3469,6 +3470,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMovement: {fileID: 1097483840}
   mouseSensitivity: 100
+  cameraAngleSpeed: 80
   camJoystick: {fileID: 1493737016}
 --- !u!1 &1923236650
 GameObject:

@@ -10,8 +10,7 @@ public class CameraMovement : MonoBehaviour
     private float rotateX = 0.0f;
 
     private float cameraAngle;
-    private float cameraAngleSpeed = 100.0f;
-
+    public float cameraAngleSpeed = 80.0f;
 
     public Joystick camJoystick;
 
