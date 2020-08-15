@@ -12,18 +12,18 @@ public class RotationController : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        character = this.transform.parent.gameObject;
+        character = this.transform.gameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
         var mouseMove = new Vector2(Input.GetAxisRaw("Mouse X"),
-            Input.GetAxisRaw("Mouse Y"));
+                                    Input.GetAxisRaw("Mouse Y"));
         mouseMove = Vector2.Scale(mouseMove, new Vector2(SENS_HOR, SENS_VER));
 
         character.transform.Rotate(0, mouseMove.x, 0);
-        transform.Rotate(-mouseMove.y, 0, 0);
+        //transform.Rotate(-mouseMove.y, 0, 0);
 
         if (Input.GetKeyDown(KeyCode.Escape))
             Cursor.lockState = CursorLockMode.None;
