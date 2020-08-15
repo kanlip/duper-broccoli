@@ -1,13 +1,20 @@
-﻿using UnityEngine;
+﻿/* Start Header **************************************************************/
+/*!
+\file       NetworkPlayerNameInputField.cs
+\author     Eugene Lee Yuih Chin, developer@exitgames.com
+\StudentNo  6572595
+\par        xelycx@gmail.com
+\date       15.8.2020
+\brief
+
+Reproduction or disclosure of this file or its contents
+without the prior written consent of author is prohibited.
+*/
+/* End Header ****************************************************************/
+
+using UnityEngine;
 using UnityEngine.UI;
-
-
 using Photon.Pun;
-using Photon.Realtime;
-
-
-using System.Collections;
-
 
 namespace Com.MyCompany.MyGame
 {
@@ -15,28 +22,18 @@ namespace Com.MyCompany.MyGame
     /// Player name input field. Let the user input his name, will appear above the player in the game.
     /// </summary>
     [RequireComponent(typeof(InputField))]
-    public class PlayerNameInputField : MonoBehaviour
+    public class NetworkPlayerNameInputField : MonoBehaviour
     {
         #region Private Constants
-
-
         // Store the PlayerPref Key to avoid typos
         const string playerNamePrefKey = "PlayerName";
-
-
         #endregion
 
 
         #region MonoBehaviour CallBacks
 
-
-        /// <summary>
-        /// MonoBehaviour method called on GameObject by Unity during initialization phase.
-        /// </summary>
         void Start()
         {
-
-
             string defaultName = string.Empty;
             InputField _inputField = this.GetComponent<InputField>();
             if (_inputField != null)
@@ -48,16 +45,13 @@ namespace Com.MyCompany.MyGame
                 }
             }
 
-
             PhotonNetwork.NickName = defaultName;
         }
-
 
         #endregion
 
 
         #region Public Methods
-
 
         /// <summary>
         /// Sets the name of the player, and save it in the PlayerPrefs for future sessions.
@@ -65,18 +59,14 @@ namespace Com.MyCompany.MyGame
         /// <param name="value">The name of the Player</param>
         public void SetPlayerName(string value)
         {
-            // #Important
             if (string.IsNullOrEmpty(value))
             {
-                Debug.LogError("Player Name is null or empty");
-                return;
+                PhotonNetwork.NickName = "Nameless";
             }
             PhotonNetwork.NickName = value;
 
-
             PlayerPrefs.SetString(playerNamePrefKey, value);
         }
-
 
         #endregion
     }
