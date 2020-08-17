@@ -4,15 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - HealthPotion
-  - HealthPotionAmount
-  - GameOver
-  - FPS
-  - TPS
-  - SettingsPanel
-  - FPSCam
-  - TPSCam
-  - RotateCam
+
   layers:
   - Default
   - TransparentFX
