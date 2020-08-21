@@ -62,7 +62,7 @@ namespace Com.MyCompany.MyGame
             // Reflect the Player Health
             if (playerHealthSlider != null)
             {
-                playerHealthSlider.value = target.getHealth();
+                playerHealthSlider.value = target.Health;
             }
         }
 

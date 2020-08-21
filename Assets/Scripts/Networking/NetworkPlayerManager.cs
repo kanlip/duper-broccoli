@@ -1,10 +1,10 @@
 ﻿/* Start Header **************************************************************/
 /*!
 \file       NetworkPlayerManager.cs
-\author     Eugene Lee Yuih Chin, Oh Hui Chin, developer@exitgames.com
-\StudentNo  6572595, 6213303
-\par        xelycx@gmail.com, huichin339@hotmail.com
-\date       21.8.2020
+\author     Eugene Lee Yuih Chin, developer@exitgames.com
+\StudentNo  6572595
+\par        xelycx@gmail.com
+\date       15.8.2020
 \brief
 
 Reproduction or disclosure of this file or its contents
@@ -15,7 +15,6 @@ without the prior written consent of author is prohibited.
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace Com.MyCompany.MyGame
 {
@@ -36,9 +35,8 @@ namespace Com.MyCompany.MyGame
         public float SENS_HOR = 3.0f;
         public float SENS_VER = 2.0f;
 
-        //[Tooltip("The current Health of our player")]
-        //public float Health = 1f;
-       
+        [Tooltip("The current Health of our player")]
+        public float Health = 1f;
 
         [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
         public static GameObject LocalPlayerInstance;
@@ -57,17 +55,6 @@ namespace Com.MyCompany.MyGame
 
         //True, when the user is firing
         bool IsFiring;
-
-        GameObject rightJoystick;
-        GameObject attackButton;
-
-        GameObject potionButton;
-        GameObject amountOfPotion;
-        private float Health;
-        private float restoreHp = 10f;
-        private int playerPotionAmt = 5;
-        private float maxHealth;
-
 
         #endregion
 
@@ -97,9 +84,6 @@ namespace Com.MyCompany.MyGame
             // #Critical
             // we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
             DontDestroyOnLoad(gameObject);
-
-            //set the current health to 100
-            this.Health = 100f;
         }
 
         /// <summary>
@@ -134,21 +118,6 @@ namespace Com.MyCompany.MyGame
                 Debug.LogWarning("<Color=Red><b>Missing</b></Color> PlayerUiPrefab reference on player Prefab.", this);
             }
 
-            rightJoystick = GameObject.FindWithTag("RotateCam");
-            attackButton = GameObject.FindWithTag("AttackButton");
-
-            potionButton = GameObject.FindWithTag("HealthPotion");
-            amountOfPotion = GameObject.FindWithTag("HealthPotionAmount");
-
-            //display the amount of potion
-            amountOfPotion.GetComponent<Text>().text = playerPotionAmt.ToString();
-
-            //for when player click on the potion button
-            potionButton.GetComponent<Button>().onClick.AddListener(potionRestoreHp);
-
-            //set the max health to current health
-            maxHealth = this.Health;
-
 #if UNITY_5_4_OR_NEWER
             // Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
@@ -175,13 +144,6 @@ namespace Com.MyCompany.MyGame
         /// </summary>
         public void Update()
         {
-            //test to see if the hp goes down
-            if(Input.GetKey(KeyCode.L))
-            {
-                this.Health -= 0.5f;
-                Debug.Log(this.Health);
-            }
-
             elapsedTime += Time.deltaTime;
             // we only process Inputs and check health if we are the local player
             if (photonView.IsMine)
@@ -333,20 +295,6 @@ namespace Com.MyCompany.MyGame
         /// </summary>
         void ProcessInputs()
         {
-
-#if UNITY_ANDROID || UNITY_IOS
-
-            //enable the jostick to be able to drag around freely
-            Cursor.lockState = CursorLockMode.None;
-
-            //right joystick movement to rotate camera
-            float touchX = rightJoystick.GetComponent<FixedJoystick>().Horizontal * SENS_HOR;
-            transform.Rotate(0, touchX, 0);
-
-            //press button to fire at the enemy
-            attackButton.GetComponent<Button>().onClick.AddListener(attackButtonPressed);        
-
-#else
             if (Input.GetButtonDown("Fire1") && elapsedTime > fireCoolDown)
             {
                 this.GetComponent<PhotonView>().RPC("Shoot", RpcTarget.All);
@@ -381,14 +329,14 @@ namespace Com.MyCompany.MyGame
 
             transform.Rotate(0, mouseMove.x, 0);
             //transform.Rotate(-mouseMove.y, 0, 0);
-#endif
+
             if (Input.GetKeyDown(KeyCode.Escape))
                 Cursor.lockState = CursorLockMode.None;
         }
 
-#endregion
+        #endregion
 
-#region IPunObservable implementation
+        #region IPunObservable implementation
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
@@ -406,60 +354,7 @@ namespace Com.MyCompany.MyGame
             }
         }
 
-#endregion
-
-        void attackButtonPressed()
-        {
-            if (elapsedTime > fireCoolDown)
-            {
-                this.GetComponent<PhotonView>().RPC("Shoot", RpcTarget.All);
-                elapsedTime = 0;
-            }
-        }
-
-        //when player clicks on potion button it will restore the health
-        void potionRestoreHp()
-        {
-            //check if player health is lesser than max health and if player have enough potion
-            if (this.Health < maxHealth && playerPotionAmt > 0)
-            {
-                this.Health += restoreHp;
-
-                //set the restore health to the max health so it wont overshot 100
-                if(this.Health > maxHealth)
-                {
-                    this.Health = maxHealth;
-                }
-
-                //if player have potion then player can use it
-                if(playerPotionAmt >= 0)
-                {
-                    playerPotionAmt -= 1;
-
-                    //if player left 0 potion set it to 0
-                    if(playerPotionAmt < 0)
-                    {
-                        playerPotionAmt = 0;
-                    }
-
-                    //display the amount of potion
-                    amountOfPotion.GetComponent<Text>().text = playerPotionAmt.ToString();
-                }
-              
-            }
-
-            
-        }
-
-        void setHealth(int hp)
-        {
-            this.Health = hp;
-        }
-
-        public float getHealth()
-        {
-            return this.Health;
-        }
+        #endregion
 
         /*
         [PunRPC]

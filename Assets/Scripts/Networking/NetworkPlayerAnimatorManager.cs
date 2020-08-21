@@ -14,7 +14,6 @@ without the prior written consent of author is prohibited.
 
 using Photon.Pun;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Com.MyCompany.MyGame
 {
@@ -31,11 +30,6 @@ namespace Com.MyCompany.MyGame
         private float elapsedTime = 0.0f;
         private float directionDampTime = 0.25f;
         Animator animator;
-
-        GameObject leftJoystick;
-        GameObject attackButton;
-        private float vMobileMove;
-        private float hMobileMove;
         #endregion
 
         #region MonoBehaviour CallBacks
@@ -46,10 +40,7 @@ namespace Com.MyCompany.MyGame
         void Start () 
 	    {
 	        animator = GetComponent<Animator>();
-
-            leftJoystick = GameObject.FindWithTag("GameController");
-            attackButton = GameObject.FindWithTag("AttackButton");
-        }
+	    }
 	        
 		/// <summary>
 		/// MonoBehaviour method called on GameObject by Unity on every frame.
@@ -68,18 +59,13 @@ namespace Com.MyCompany.MyGame
 	        {
 				return;
 			}
-#if UNITY_ANDROID || UNITY_IOS
-            //attack button is pressed for mobile
-            attackButton.GetComponent<Button>().onClick.AddListener(attackButtonPressed);
 
-#else
-            //pc input
             if (Input.GetButtonDown("Fire1") && elapsedTime > fireCoolDown)
             {
                 animator.SetTrigger("Shoot");
                 elapsedTime = 0;
             }
-#endif
+
             // deal with Jumping
             AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
@@ -97,18 +83,6 @@ namespace Com.MyCompany.MyGame
             }
             else { animator.speed = 1; }
 
-#if UNITY_ANDROID || UNITY_IOS
-
-            //mobile input for movement of the player
-            hMobileMove = leftJoystick.GetComponent<FixedJoystick>().Horizontal;
-            vMobileMove = leftJoystick.GetComponent<FixedJoystick>().Vertical;
-
-            animator.SetFloat("Speed", vMobileMove * vMobileMove + hMobileMove * hMobileMove, directionDampTime, Time.deltaTime);
-            animator.SetFloat("Vertical_f", vMobileMove, directionDampTime, Time.deltaTime);
-            animator.SetFloat("Direction", hMobileMove, directionDampTime, Time.deltaTime);
-
-#else
-            //pc input for movement of the player
             float h = Input.GetAxis("Horizontal");
             float v = Input.GetAxis("Vertical");
             if (Mathf.Abs(v) < 0.1f)
@@ -119,18 +93,9 @@ namespace Com.MyCompany.MyGame
             animator.SetFloat("Speed", v * v + h * h, directionDampTime, Time.deltaTime);
             animator.SetFloat("Vertical_f", v, directionDampTime, Time.deltaTime);
             animator.SetFloat("Direction", h, directionDampTime, Time.deltaTime);
-#endif
         }
 
-        void attackButtonPressed()
-        {
-            if (elapsedTime > fireCoolDown)
-            {
-                animator.SetTrigger("Shoot");
-                elapsedTime = 0;
-            }
-        }
-#endregion
+		#endregion
 
 	}
 }

@@ -4,15 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - HealthPotion
-  - HealthPotionAmount
-  - RotateCam
-  - AttackButton
-  - Arrow
-  - MedDemonHp
-  - BossDemonHp
-  - SmallDemonHp
-  - Enemy
+
   layers:
   - Default
   - TransparentFX
