@@ -194,7 +194,6 @@ MonoBehaviour:
   fireCoolDown: 0.5
   SENS_HOR: 3
   SENS_VER: 2
-  Health: 100
   playerUiPrefab: {fileID: 3009218558746257231, guid: af83eb298fb72534282764af47f98ce2,
     type: 3}
   beams: {fileID: 1732003110857383334}
