@@ -23,7 +23,7 @@ public class RotationController : MonoBehaviour
         mouseMove = Vector2.Scale(mouseMove, new Vector2(SENS_HOR, SENS_VER));
 
         character.transform.Rotate(0, mouseMove.x, 0);
-        //transform.Rotate(-mouseMove.y, 0, 0);
+        transform.Rotate(-mouseMove.y, 0, 0);
 
         if (Input.GetKeyDown(KeyCode.Escape))
             Cursor.lockState = CursorLockMode.None;
