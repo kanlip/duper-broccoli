@@ -17,9 +17,8 @@
         {
             _enemyAnimator = GetComponent<Animator>();
             _player = GameObject.FindGameObjectWithTag("Player");
-            if(_player != null)
-                _playerTransform = _playerTransform.GetComponent<Transform>();
-        
+            if (_player != null)
+                _playerTransform = _player.GetComponent<Transform>();
         }
         private void Awake()
         {
@@ -29,7 +28,9 @@
         }
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Alpha0))
+
+
+        if (Input.GetKeyDown(KeyCode.Alpha0))
                 Attack();
             if (_playerTransform == null)
             {
