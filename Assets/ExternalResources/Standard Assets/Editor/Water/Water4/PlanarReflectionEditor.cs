@@ -4,7 +4,7 @@ using UnityEditor;
 
 namespace UnityStandardAssets.Water
 {
-    [CustomEditor(typeof(PlanarReflection))]
+   // [CustomEditor(typeof(PlanarReflection))]
     public class PlanarReflectionEditor : Editor
     {
         private SerializedObject serObj;
@@ -41,9 +41,9 @@ namespace UnityStandardAssets.Water
             if (showKidsWithReflectionHint)
             {
                 int i = 0;
-                foreach (Transform t in ((PlanarReflection)target).transform)
+            /*    foreach (Transform t in ((PlanarReflection)target).transform)
                 {
-                    if (t.GetComponent<WaterTile>())
+                   if (t.GetComponent<WaterTile>())
                     {
                         if (i % 2 == 0)
                             EditorGUILayout.BeginHorizontal();
@@ -55,11 +55,11 @@ namespace UnityStandardAssets.Water
                 }
                 if (i > 0)
                     EditorGUILayout.EndHorizontal();
-            }
+           */ }
             EditorGUILayout.EndToggleGroup();
 
             serObj.ApplyModifiedProperties();
         }
 
-    }
+   }
 }

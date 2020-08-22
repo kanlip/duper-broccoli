@@ -4,7 +4,7 @@ using UnityEditor;
 
 
 namespace UnityStandardAssets.Water
-{
+{/*
     [CustomEditor(typeof(GerstnerDisplace))]
     public class GerstnerDisplaceEditor : Editor
     {
@@ -99,10 +99,10 @@ namespace UnityStandardAssets.Water
 			
                 heightDisplacement = EditorGUILayout.Slider("Height", heightDisplacement, 0.0F, 5.0F);
                 WaterEditorUtility.SetMaterialFloat("_HeightDisplacement", heightDisplacement, sharedWaterMaterial);
-                */
+                
             }
 
             serObj.ApplyModifiedProperties();
         }
-    }
+    }*/
 }

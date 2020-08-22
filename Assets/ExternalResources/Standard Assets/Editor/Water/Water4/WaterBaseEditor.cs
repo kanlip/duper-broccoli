@@ -3,7 +3,7 @@ using UnityEditor;
 
 
 namespace UnityStandardAssets.Water
-{
+{/*
     [CustomEditor(typeof(WaterBase))]
     public class WaterBaseEditor : Editor
     {
@@ -192,5 +192,5 @@ namespace UnityStandardAssets.Water
             serObj.ApplyModifiedProperties();
         }
 
-    }
+    }*/
 }
