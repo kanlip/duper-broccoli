@@ -13,13 +13,15 @@
         private GameObject _player;
         private Transform _playerTransform;
         private Animator _enemyAnimator;
+        private GameObject _potion;
         private void Start()
         {
             _enemyAnimator = GetComponent<Animator>();
             _player = GameObject.FindGameObjectWithTag("Player");
             if(_player != null)
                 _playerTransform = _playerTransform.GetComponent<Transform>();
-        
+            _potion = GameObject.FindWithTag("HealthPotionAmount");
+
         }
         private void Awake()
         {
@@ -74,7 +76,14 @@
         {
             if(CurrentHealth > 0) 
                 CurrentHealth -= damageTaken;
-            else 
+            else
+            {
                 _enemyAnimator.SetTrigger(EnemyAnimation.Dead.ToString());
+                if (RandomChance.TenPercentChance())
+                {
+                    // TODO DROP POTION (Increase potion count)
+                }
+                // TODO give EXP to player
+            }
         }
     }

@@ -78,8 +78,15 @@ public class MediumMonsterController:MonoBehaviour,IEnemy
     {
         if(CurrentHealth > 0) 
             CurrentHealth -= damageTaken;
-        else 
+        else
+        {
             _enemyAnimator.SetTrigger(EnemyAnimation.Dead.ToString());
+            if (RandomChance.TenPercentChance())
+            {
+                // TODO DROP POTION (Increase potion count)
+            }
+            // TODO give EXP to player
+        }
     }
     
 }
