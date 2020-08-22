@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/NetworkedRoom.unity
     guid: d9f835c081863674ab868a8fb656f21a
+  - enabled: 1
+    path: Assets/Scenes/Map.unity
+    guid: cd72a9e2c397e4c5d93e947696d12f7f
   m_configObjects: {}

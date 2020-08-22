@@ -157,7 +157,7 @@ namespace Com.MyCompany.MyGame
                 Debug.Log("OnJoinedRoom");
                 // #Critical
                 // Load the Room Level.
-                PhotonNetwork.LoadLevel("NetworkedRoom");
+                PhotonNetwork.LoadLevel("Map");
             }
         }
     }
