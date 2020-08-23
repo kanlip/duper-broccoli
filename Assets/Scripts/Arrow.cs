@@ -26,7 +26,7 @@ namespace Com.MyCompany.MyGame
         public float lifeTime = 3.0f;
         private Rigidbody rb;
         public GameObject owner;
-        //private GameObject collidedGameObj;
+        private GameObject collidedGameObj;
 
         IEnumerator destroyArrow()
         {
@@ -73,6 +73,38 @@ namespace Com.MyCompany.MyGame
             }
         }
         */
+
+        public void OnTriggerEnter(Collider other)
+        {
+            int damageAmount = 10;
+            if (other.gameObject.tag == "Player" && other.gameObject != owner)
+            {
+                collidedGameObj = other.gameObject;
+                //collidedGameObj.GetComponent<NetworkPlayerManager>().TakeDamage(damageAmount);
+                //collidedGameObj.GetPhotonView().RPC("TakeDamage", RpcTarget.All, damageAmount);
+
+                collidedGameObj.GetComponent<NetworkPlayerManager>().TakeDamage(damageAmount);
+                Debug.Log("damage");
+                this.gameObject.SetActive(false);
+                //this.GetComponent<PhotonView>().RPC("DestroyRPC", RpcTarget.AllBuffered);
+            }
+            if (other.gameObject.tag == "Enemy")
+            {
+                collidedGameObj = other.gameObject;
+                if (collidedGameObj.GetComponent<MonsterController>())
+                {
+                    collidedGameObj.GetComponent<MonsterController>().DamageTaken(damageAmount);
+                }
+                //else if (collidedGameObj.GetComponent<SmallMonsterController>())
+                //{
+                //    collidedGameObj.GetComponent<SmallMonsterController>().DamageTaken(damageAmount);
+                //}
+                //else if (collidedGameObj.GetComponent<MediumMonsterController>())
+                //{
+                //    collidedGameObj.GetComponent<MediumMonsterController>().DamageTaken(damageAmount);
+                //}
+            }
+        }
 
         [PunRPC]
         public void DestroyRPC()

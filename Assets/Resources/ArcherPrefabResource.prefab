@@ -12,12 +12,11 @@ GameObject:
   - component: {fileID: 9500000}
   - component: {fileID: 14300000}
   - component: {fileID: 11400008}
-  - component: {fileID: 11400010}
-  - component: {fileID: 5484970}
   - component: {fileID: 11413802}
   - component: {fileID: -8352381908628101276}
   - component: {fileID: -5586702074408841830}
   - component: {fileID: 2800376319180699445}
+  - component: {fileID: 2565311204880107066}
   m_Layer: 0
   m_Name: ArcherPrefabResource
   m_TagString: Player
@@ -98,43 +97,12 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   ObservedComponents:
-  - {fileID: 11400010}
   - {fileID: 11413802}
   - {fileID: -8352381908628101276}
+  - {fileID: 2565311204880107066}
   viewIdField: 0
   InstantiationId: 1
   isRuntimeInstantiated: 0
---- !u!114 &11400010
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
---- !u!54 &5484970
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100030}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!114 &11413802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,9 +162,11 @@ MonoBehaviour:
   fireCoolDown: 0.5
   SENS_HOR: 3
   SENS_VER: 2
-  playerUiPrefab: {fileID: 3009218558746257231, guid: af83eb298fb72534282764af47f98ce2,
+  playerUiPrefab: {fileID: 6258586399017396571, guid: 33d60e676b0a9c445a3ef2585171a153,
     type: 3}
   beams: {fileID: 1732003110857383334}
+  Health: 0
+  maxHealth: 0
 --- !u!114 &-5586702074408841830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,6 +200,21 @@ MonoBehaviour:
   centerOffset: {x: 0, y: 2, z: 0}
   followOnStart: 0
   smoothSpeed: 2
+--- !u!114 &2565311204880107066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
 --- !u!1 &86326257742316013
 GameObject:
   m_ObjectHideFlags: 0
