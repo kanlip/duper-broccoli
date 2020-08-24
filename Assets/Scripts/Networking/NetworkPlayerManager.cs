@@ -63,11 +63,14 @@ namespace Com.MyCompany.MyGame
 
         GameObject potionButton;
         GameObject amountOfPotion;
+
+        [SerializeField]
         private float Health;
+        [SerializeField]
+        private float maxHealth;
         private float restoreHp = 10f;
         private int playerPotionAmt = 5;
-        private float maxHealth;
-
+        
 
         #endregion
 
@@ -80,7 +83,7 @@ namespace Com.MyCompany.MyGame
         {
             if (this.beams == null)
             {
-                Debug.LogError("<Color=Red><b>Missing</b></Color> Beams Reference.", this);
+                //Debug.LogError("<Color=Red><b>Missing</b></Color> Beams Reference.", this);
             }
             else
             {
@@ -221,20 +224,20 @@ namespace Com.MyCompany.MyGame
             //    this.Health -= 10.0f;
             //    other.gameObject.SetActive(false);
             //}
-            if (other.name.Contains("Arrow") && other.gameObject.GetComponent<Arrow>().owner != this.gameObject)
-            {
-                this.Health -= 10.0f;
-                //other.gameObject.SetActive(false);
-            }
+
+
+            //if (other.name.Contains("Arrow") && other.gameObject.GetComponent<Arrow>().owner != this.gameObject)
+            //{
+            //    this.Health -= 10.0f;
+            //    //other.gameObject.SetActive(false);
+            //}
 
             // We are only interested in Beamers
             // we should be using tags but for the sake of distribution, let's simply check by name.
-            if (!other.name.Contains("Beam"))
+            if (other.name.Contains("Beam"))
             {
-                return;
+                this.Health -= 1.0f;
             }
-
-            this.Health -= 1.0f;
         }
 
         /// <summary>
@@ -250,15 +253,11 @@ namespace Com.MyCompany.MyGame
                 return;
             }
 
-            // We are only interested in Beamers
-            // we should be using tags but for the sake of distribution, let's simply check by name.
+            //should use tags
             if (!other.name.Contains("Beam"))
             {
-                return;
+                this.Health -= 1.0f * Time.deltaTime;
             }
-
-            // we slowly affect health when beam is constantly hitting us, so player has to move to prevent death.
-            this.Health -= 1.0f * Time.deltaTime;
         }
 
 
@@ -306,15 +305,6 @@ namespace Com.MyCompany.MyGame
             GameObject arrow = Instantiate(arrowPrefab, arrowSpawn.position, arrowSpawn.transform.rotation);
             arrow.GetComponent<Arrow>().SetOwner(this.gameObject);
         }
-        //[PunRPC]
-        //public void Shoot()
-        //{
-        //    GameObject arrow = PhotonNetwork.Instantiate(arrowPrefab.name, arrowSpawn.position, arrowSpawn.transform.rotation);
-        //    arrow.GetComponent<Arrow>().SetOwner(this.gameObject);
-        //    Rigidbody rb = GetComponent<Rigidbody>();
-        //    float speed = 100.0f;
-        //    rb.AddForce(-rb.transform.up * Time.deltaTime * speed, ForceMode.Force);
-        //}
 
         //[PunRPC]
         //private void Shoot()//Vector3 pos, Vector3 dir)
@@ -445,13 +435,10 @@ namespace Com.MyCompany.MyGame
                     //display the amount of potion
                     amountOfPotion.GetComponent<Text>().text = playerPotionAmt.ToString();
                 }
-              
             }
-
-            
         }
 
-        void setHealth(int hp)
+        public void setHealth(int hp)
         {
             this.Health = hp;
         }
@@ -461,15 +448,18 @@ namespace Com.MyCompany.MyGame
             return this.Health;
         }
 
-        /*
-        [PunRPC]
         public void TakeDamage(int damage)
         {
-            if (photonView.IsMine)
-            {
-                Health -= damage;
-            }
+            Health -= damage;
         }
-        */
+
+        //[PunRPC]
+        //public void TakeDamage(int damage)
+        //{
+        //    if (photonView.IsMine)
+        //    {
+        //        Health -= damage;
+        //    }
+        //}
     }
 }

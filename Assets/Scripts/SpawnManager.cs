@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class SpawnManager : MonoBehaviour
     public GameObject [] enemyPrefab;
     public Transform [] spawnPoints;
     public GameObject bossPrefab;
+
+    public int EnemyToSpawnAmount = 10;
 
     private int spawnPointIndex;
     private int enemyIndex;
@@ -17,7 +20,7 @@ public class SpawnManager : MonoBehaviour
     void Start()
     {
         //spawn 10 random enemy small or med
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < EnemyToSpawnAmount; i++)
         {
             //set a random spawn index
             spawnPointIndex = Random.Range(0, spawnPoints.Length);
@@ -29,7 +32,8 @@ public class SpawnManager : MonoBehaviour
             Transform spawnPosition = spawnPoints[spawnPointIndex];
 
             //spawn enemy
-            Instantiate(enemyPrefab[enemyIndex], spawnPosition.position, spawnPosition.rotation);
+            //Instantiate(enemyPrefab[enemyIndex], spawnPosition.position, spawnPosition.rotation);
+            PhotonNetwork.Instantiate(enemyPrefab[enemyIndex].name, spawnPosition.position, Quaternion.identity, 0);
         }
 
         //find all the gameobject tag with enemy
@@ -51,7 +55,8 @@ public class SpawnManager : MonoBehaviour
             //if not more enemy left boss will spawn
             if (counter == 0)
             {
-                Instantiate(bossPrefab, spawnPoints[0].position, spawnPoints[0].rotation);
+                //Instantiate(bossPrefab, spawnPoints[0].position, spawnPoints[0].rotation);
+                PhotonNetwork.Instantiate(bossPrefab.name, spawnPoints[0].position, Quaternion.identity, 0);
             }
         }
 

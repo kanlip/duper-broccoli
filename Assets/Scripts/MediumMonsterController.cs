@@ -1,19 +1,24 @@
 using System;
 using UnityEngine;
 
+using Com.MyCompany.MyGame;
+using System.Collections;
 
 public class MediumMonsterController:MonoBehaviour,IEnemy
-{   
-    public int Health { get; set; }
+{
+    [SerializeField]
+    public int MaxHealth { get; set; }
     public int Exp { get; set; }
     public int MovementSpeed { get; set; }
-    public EnemyAnimation CurrentBotState { get; set; }
+    public EnemyAnimation animationState { get; set; }
     public int AttackSpeed { get; set; }
-    private int CurrentHealth { get; set; }
+    [SerializeField]
+    private int CurrentHealth;// { get; set; }
     private GameObject _player;
     private Transform _playerTransform;
     private Animator _enemyAnimator;
-    
+    private bool canAttack = true;
+    private float attackCoolDown = 2.0f;
     
     private void Start()
     {
@@ -41,39 +46,52 @@ public class MediumMonsterController:MonoBehaviour,IEnemy
         {
             direction.y = 0;
             transform.rotation = Quaternion.LookRotation(direction);
-            if (direction.magnitude < 1)
+            if (direction.magnitude < 4)
             {
-                Attack();
-                transform.Translate(0,0,0.04f);
+                if (canAttack) { Attack(); }
+                    
+                //transform.Translate(0,0,0.04f);
             }
             else
             {
                 _enemyAnimator.SetTrigger(EnemyAnimation.Run.ToString());
                 transform.Translate (0, 0, 0.2F);
-                CurrentBotState = EnemyAnimation.Run;
+                animationState = EnemyAnimation.Run;
             }
         }
         else
         {
             _enemyAnimator.SetTrigger(EnemyAnimation.Idle.ToString());
-            CurrentBotState = EnemyAnimation.Idle;
+            animationState = EnemyAnimation.Idle;
         }
+        //if (attackCoolDownTimer < attackCoolDown) { attackCoolDownTimer += Time.deltaTime; }
+            
     }
 
     private void Awake()
     {
-        Health = 150;
+        MaxHealth = 150;
         Exp = 5;
-        CurrentHealth = Health;
+        CurrentHealth = MaxHealth;
     }
     
     public void Attack()
     {
         _enemyAnimator.SetTrigger(EnemyAnimation.Attack.ToString());
-        
-        CurrentBotState = EnemyAnimation.Attack;
+
+        animationState = EnemyAnimation.Attack;
+        _player.GetComponent<NetworkPlayerManager>().TakeDamage(10);
+        canAttack = false;
+        //attackCoolDownTimer = 0.0f;
+        StartCoroutine(RestoreAttackYield());
     }
-    
+
+    IEnumerator RestoreAttackYield()
+    {
+        yield return new WaitForSeconds(attackCoolDown);
+        canAttack = true;
+    }
+
     public void DamageTaken(int damageTaken)
     {
         if(CurrentHealth > 0) 

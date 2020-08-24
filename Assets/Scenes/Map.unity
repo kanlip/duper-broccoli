@@ -470,7 +470,7 @@ GameObject:
   m_Component:
   - component: {fileID: 306181437}
   m_Layer: 0
-  m_Name: =====IINTERACTABLES=====
+  m_Name: =====INTERACTABLES=====
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1694,6 +1694,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4857220190266127923, guid: 7d67bebee0a0bd842a4caceba1a30285,
+        type: 3}
+      propertyPath: playerPrefab
+      value: 
+      objectReference: {fileID: 100030, guid: 3d6e19fa506ad2f40bc432c7e80992d0, type: 3}
     - target: {fileID: 6882735084724353842, guid: 7d67bebee0a0bd842a4caceba1a30285,
         type: 3}
       propertyPath: m_Name
@@ -1701,6 +1706,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d67bebee0a0bd842a4caceba1a30285, type: 3}
+--- !u!114 &1402722442 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4857220190266127923, guid: 7d67bebee0a0bd842a4caceba1a30285,
+    type: 3}
+  m_PrefabInstance: {fileID: 1402722441}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77a11d623fbb5af4688ee2e8e2be6bb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1436538118
 GameObject:
   m_ObjectHideFlags: 0
@@ -2436,7 +2453,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1402722442}
         m_MethodName: LeaveRoom
         m_Mode: 1
         m_Arguments:
