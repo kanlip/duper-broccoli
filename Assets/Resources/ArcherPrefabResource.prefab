@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: -5586702074408841830}
   - component: {fileID: 2800376319180699445}
   - component: {fileID: 2565311204880107066}
+  - component: {fileID: 8138424518135802500}
   m_Layer: 0
   m_Name: ArcherPrefabResource
   m_TagString: Player
@@ -190,7 +191,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100030}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a985aa371bdc1a4fa4e1a166785c090, type: 3}
   m_Name: 
@@ -215,6 +216,18 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
+--- !u!114 &8138424518135802500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b1c62a049a83194594d736db2d06d04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &86326257742316013
 GameObject:
   m_ObjectHideFlags: 0

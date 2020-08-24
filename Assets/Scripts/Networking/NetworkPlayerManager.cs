@@ -302,7 +302,7 @@ namespace Com.MyCompany.MyGame
         [PunRPC]
         public void Shoot()
         {
-            GameObject arrow = Instantiate(arrowPrefab, arrowSpawn.position, arrowSpawn.transform.rotation);
+            GameObject arrow = Instantiate(arrowPrefab, arrowSpawn.position, Camera.main.transform.rotation);
             arrow.GetComponent<Arrow>().SetOwner(this.gameObject);
         }
 
