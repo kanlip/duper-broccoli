@@ -12,14 +12,7 @@ without the prior written consent of author is prohibited.
 */
 /* End Header ****************************************************************/
 
-<<<<<<< HEAD
-using System;
 
-=======
-=======
-﻿
->>>>>>> 33492d5ad02a487e958cf07b1467b5db72e1244e
->>>>>>> parent of f95c11c... Revert #31 test
 using UnityEngine;
 
 using Com.MyCompany.MyGame;
@@ -56,10 +49,7 @@ public class MonsterController : MonoBehaviour
     [SerializeField]
     public GameObject enemyUIPrefab;
 
-<<<<<<< HEAD
 
-=======
->>>>>>> parent of f95c11c... Revert #31 test
     private NavMeshAgent agent;
     GameObject playerGO;
 
@@ -97,11 +87,8 @@ public class MonsterController : MonoBehaviour
         //    _enemyAnimator.SetTrigger(EnemyAnimation.Idle.ToString());
         //    return;
         //}
-<<<<<<< HEAD
 
-        if (currentState != MonsterState.Dead)
 
-=======
         timeElapsed += Time.deltaTime;
         wanderTimer += Time.deltaTime;
 
@@ -118,7 +105,7 @@ public class MonsterController : MonoBehaviour
 
 
         if (timeElapsed > 1)
->>>>>>> parent of f95c11c... Revert #31 test
+
         {
             if (currentState != MonsterState.Dead)
             {
@@ -127,11 +114,10 @@ public class MonsterController : MonoBehaviour
             }
             timeElapsed = 0;
         }
-<<<<<<< HEAD
-=======
+
+
         //Seek();
 
->>>>>>> parent of f95c11c... Revert #31 test
 
         //if (attackCoolDownTimer < attackCoolDown) { attackCoolDownTimer += Time.deltaTime; }
     }
@@ -142,13 +128,10 @@ public class MonsterController : MonoBehaviour
         var angleOfView = Vector3.Angle(direction, transform.forward);
 
         //acquire target range
-<<<<<<< HEAD
 
 
-        if (direction.magnitude < 10 && angleOfView < 40)
-=======
+
         if (direction.magnitude < 20 )//&& angleOfView < 40)
->>>>>>> parent of f95c11c... Revert #31 test
         {
             if(agent)
                 agent.isStopped = false;
@@ -168,15 +151,10 @@ public class MonsterController : MonoBehaviour
         }
         else 
         {
-<<<<<<< HEAD
-
-            currentState = MonsterState.Idle;
-=======
             if (currentState != MonsterState.Wander)
             {
                 currentState = MonsterState.Idle;
             }
->>>>>>> parent of f95c11c... Revert #31 test
         }
     }
 
@@ -220,19 +198,13 @@ public class MonsterController : MonoBehaviour
     {
         if (currentState != MonsterState.Dead)
         {
-<<<<<<< HEAD
 
-            _enemyAnimator.SetTrigger(EnemyAnimation.Run.ToString());
-            transform.Translate(0, 0, 0.2F);
-            animationState = EnemyAnimation.Run;
-=======
             playerGO = GameObject.FindGameObjectWithTag("Player");
             if (playerGO && agent)
             {
                 Debug.Log("move");
                 agent.SetDestination(playerGO.transform.position);
             }
->>>>>>> parent of f95c11c... Revert #31 test
         }
     }
 
@@ -241,10 +213,6 @@ public class MonsterController : MonoBehaviour
 
     }
 
-<<<<<<< HEAD
-
-    public void Wander() { }
-=======
     public void Wander()
     {
         if (wanderTimer > 5)
@@ -257,7 +225,7 @@ public class MonsterController : MonoBehaviour
             wanderTimer = 0;
         }
     }
->>>>>>> parent of f95c11c... Revert #31 test
+
 
     public void Dead() 
     {

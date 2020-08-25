@@ -38,20 +38,7 @@ public class SpawnManager : MonoBehaviourPun
                 //set a random spawn index
                 spawnPointIndex = Random.Range(0, spawnPoints.Length);
 
-<<<<<<< HEAD
-            //set a random enemy index
-            enemyIndex = Random.Range(0, enemyPrefab.Length);
 
-            //get the place where enemy will spawn at
-            Transform spawnPosition = spawnPoints[spawnPointIndex];
-
-            //spawn enemy
-            //Instantiate(enemyPrefab[enemyIndex], spawnPosition.position, spawnPosition.rotation);
-            PhotonNetwork.Instantiate(enemyPrefab[enemyIndex].name, spawnPosition.position, Quaternion.identity, 0);
-        }
-        //find all the gameobject tag with enemy
-        enemyCount = GameObject.FindGameObjectsWithTag("Enemy");
-=======
                 //set a random enemy index
                 enemyIndex = Random.Range(0, enemyPrefab.Length);
 
@@ -67,7 +54,6 @@ public class SpawnManager : MonoBehaviourPun
 
             //find all the gameobject tag with enemy
             enemyCount = GameObject.FindGameObjectsWithTag("Enemy");
->>>>>>> parent of f95c11c... Revert #31 test
 
             counter = enemyCount.Length;
         }

@@ -129,7 +129,6 @@ namespace Com.MyCompany.MyGame
                     this.GetComponent<TPSCamera>().enabled = true;
                     //this.GetComponent<UnityStandardAssets.Cameras.FreeLookCam>().enabled = true;
                     //this.GetComponent<UnityStandardAssets.Cameras.ProtectCameraFromWallClip>().enabled = true;
-
                 }
             }
             else
@@ -200,12 +199,23 @@ namespace Com.MyCompany.MyGame
                 {
                     //play dead
                     isDead = true;
-                    GetComponent<NetworkPlayerAnimatorManager>().DoDeadAnimation();
-                    GetComponentInChildren<UnityStandardAssets.Cameras.FreeLookCam>().enabled = false;
-                    GetComponentInChildren<NetworkPlayerAnimatorManager>().enabled = false;
-                    //NetworkGameManager.Instance.LeaveRoom();
+                    NetworkPlayerAnimatorManager npam = GetComponent<NetworkPlayerAnimatorManager>();
+                    if (npam)
+                    {
+                        npam.DoDeadAnimation();
+
+                        npam.enabled = false;
+                    }
+                    UnityStandardAssets.Cameras.FreeLookCam flc = GetComponentInChildren<UnityStandardAssets.Cameras.FreeLookCam>();
+                    if (flc)
+                    {
+                        flc.enabled = false;
+                    }
                 }
+
+                //NetworkGameManager.Instance.LeaveRoom();
             }
+
             
             //if (this.beams != null && this.IsFiring != this.beams.activeInHierarchy)
             //{
@@ -243,10 +253,10 @@ namespace Com.MyCompany.MyGame
 
             // We are only interested in Beamers
             // we should be using tags but for the sake of distribution, let's simply check by name.
-            if (other.name.Contains("Beam"))
-            {
-                this.Health -= 1.0f;
-            }
+            //if (other.name.Contains("Beam"))
+            //{
+            //    this.Health -= 1.0f;
+            //}
         }
 
         /// <summary>
@@ -262,11 +272,11 @@ namespace Com.MyCompany.MyGame
                 return;
             }
 
-            //should use tags
-            if (!other.name.Contains("Beam"))
-            {
-                this.Health -= 1.0f * Time.deltaTime;
-            }
+            ////should use tags
+            //if (!other.name.Contains("Beam"))
+            //{
+            //    this.Health -= 1.0f * Time.deltaTime;
+            //}
         }
 
 
@@ -312,7 +322,6 @@ namespace Com.MyCompany.MyGame
         public void Shoot()
         {
             GameObject arrow = Instantiate(arrowPrefab, arrowSpawn.position, arrowSpawn.transform.rotation);
-            //GameObject arrow = Instantiate(arrowPrefab, arrowSpawn.position, arrowSpawn.transform.rotation);
             arrow.GetComponent<Arrow>().SetOwner(this.gameObject);
         }
 
@@ -429,10 +438,13 @@ namespace Com.MyCompany.MyGame
 
         void attackButtonPressed()
         {
-            if (elapsedTime > fireCoolDown)
+            if (photonView.IsMine && !isDead)
             {
-                this.GetComponent<PhotonView>().RPC("Shoot", RpcTarget.All);
-                elapsedTime = 0;
+                if (elapsedTime > fireCoolDown)
+                {
+                    this.GetComponent<PhotonView>().RPC("Shoot", RpcTarget.All);
+                    elapsedTime = 0;
+                }
             }
         }
 
