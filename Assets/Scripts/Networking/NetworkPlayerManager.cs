@@ -72,7 +72,10 @@ namespace Com.MyCompany.MyGame
         private float maxHealth;
         private float restoreHp = 10f;
         private int playerPotionAmt = 5;
-        
+
+
+        NetworkPlayerAnimatorManager npam;
+        UnityStandardAssets.Cameras.FreeLookCam flc;
 
         #endregion
 
@@ -162,6 +165,9 @@ namespace Com.MyCompany.MyGame
             //set the max health to current health
             maxHealth = this.Health;
 
+            npam = GetComponent<NetworkPlayerAnimatorManager>();
+            flc = GetComponent<UnityStandardAssets.Cameras.FreeLookCam>();
+
 #if UNITY_5_4_OR_NEWER
             // Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
@@ -199,14 +205,14 @@ namespace Com.MyCompany.MyGame
                 {
                     //play dead
                     isDead = true;
-                    NetworkPlayerAnimatorManager npam = GetComponent<NetworkPlayerAnimatorManager>();
+                    
                     if (npam)
                     {
                         npam.DoDeadAnimation();
 
                         npam.enabled = false;
                     }
-                    UnityStandardAssets.Cameras.FreeLookCam flc = GetComponentInChildren<UnityStandardAssets.Cameras.FreeLookCam>();
+                    
                     if (flc)
                     {
                         flc.enabled = false;
