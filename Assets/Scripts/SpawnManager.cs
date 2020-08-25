@@ -46,7 +46,6 @@ public class SpawnManager : MonoBehaviour
             //Instantiate(enemyPrefab[enemyIndex], spawnPosition.position, spawnPosition.rotation);
             PhotonNetwork.Instantiate(enemyPrefab[enemyIndex].name, spawnPosition.position, Quaternion.identity, 0);
         }
-
         //find all the gameobject tag with enemy
         enemyCount = GameObject.FindGameObjectsWithTag("Enemy");
 

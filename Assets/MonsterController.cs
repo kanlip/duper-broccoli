@@ -13,11 +13,12 @@ without the prior written consent of author is prohibited.
 /* End Header ****************************************************************/
 
 using System;
->>>>>>> parent of 33492d5... Camera fix, player death, arrow, spawn random place, navmesh AI,etc (#31)
+
 using UnityEngine;
 
 using Com.MyCompany.MyGame;
 using System.Collections;
+using UnityEngine.AI;
 
 public class MonsterController : MonoBehaviour, IEnemy
 {
@@ -49,15 +50,13 @@ public class MonsterController : MonoBehaviour, IEnemy
     [SerializeField]
     public GameObject enemyUIPrefab;
 
-<<<<<<< HEAD
+
     private NavMeshAgent agent;
     GameObject playerGO;
 
     float timeElapsed = 0;
     float wanderTimer = 0;
 
-=======
->>>>>>> parent of 33492d5... Camera fix, player death, arrow, spawn random place, navmesh AI,etc (#31)
     private void Start()
     {
         _enemyAnimator = GetComponent<Animator>();
@@ -89,26 +88,9 @@ public class MonsterController : MonoBehaviour, IEnemy
         //    _enemyAnimator.SetTrigger(EnemyAnimation.Idle.ToString());
         //    return;
         //}
-<<<<<<< HEAD
-        timeElapsed += Time.deltaTime;
-        wanderTimer += Time.deltaTime;
 
-        if (agent.velocity.magnitude > 0.1f) //&& !MonsterState.Attack)
-        {
-            _enemyAnimator.SetTrigger(EnemyAnimation.Run.ToString());
-            animationState = EnemyAnimation.Run;
-        }
-        else
-        {
-            _enemyAnimator.SetTrigger(EnemyAnimation.Idle.ToString());
-            animationState = EnemyAnimation.Idle;
-        }
-
-
-        if (timeElapsed > 1)
-=======
         if (currentState != MonsterState.Dead)
->>>>>>> parent of 33492d5... Camera fix, player death, arrow, spawn random place, navmesh AI,etc (#31)
+
         {
             if (currentState != MonsterState.Dead)
             {
@@ -117,13 +99,7 @@ public class MonsterController : MonoBehaviour, IEnemy
             }
             timeElapsed = 0;
         }
-<<<<<<< HEAD
-        //Seek();
 
-
-=======
-        
->>>>>>> parent of 33492d5... Camera fix, player death, arrow, spawn random place, navmesh AI,etc (#31)
         //if (attackCoolDownTimer < attackCoolDown) { attackCoolDownTimer += Time.deltaTime; }
     }
 
@@ -133,11 +109,9 @@ public class MonsterController : MonoBehaviour, IEnemy
         var angleOfView = Vector3.Angle(direction, transform.forward);
 
         //acquire target range
-<<<<<<< HEAD
-        if (direction.magnitude < 20 )//&& angleOfView < 40)
-=======
+
+
         if (direction.magnitude < 10 && angleOfView < 40)
->>>>>>> parent of 33492d5... Camera fix, player death, arrow, spawn random place, navmesh AI,etc (#31)
         {
             direction.y = 0;
             transform.rotation = Quaternion.LookRotation(direction);
@@ -154,14 +128,8 @@ public class MonsterController : MonoBehaviour, IEnemy
         }
         else 
         {
-<<<<<<< HEAD
-            if (currentState != MonsterState.Wander)
-            {
-                currentState = MonsterState.Idle;
-            }
-=======
+
             currentState = MonsterState.Idle;
->>>>>>> parent of 33492d5... Camera fix, player death, arrow, spawn random place, navmesh AI,etc (#31)
         }
         //else
         //{
@@ -205,18 +173,10 @@ public class MonsterController : MonoBehaviour, IEnemy
     {
         if (currentState != MonsterState.Dead)
         {
-<<<<<<< HEAD
-            playerGO = GameObject.FindGameObjectWithTag("Player");
-            if (playerGO && agent)
-            {
-                Debug.Log("move");
-                agent.SetDestination(playerGO.transform.position);
-            }
-=======
+
             _enemyAnimator.SetTrigger(EnemyAnimation.Run.ToString());
             transform.Translate(0, 0, 0.2F);
             animationState = EnemyAnimation.Run;
->>>>>>> parent of 33492d5... Camera fix, player death, arrow, spawn random place, navmesh AI,etc (#31)
         }
     }
 
@@ -225,22 +185,8 @@ public class MonsterController : MonoBehaviour, IEnemy
 
     }
 
-<<<<<<< HEAD
-    public void Wander()
-    {
-        if (wanderTimer > 5)
-        {
-            Vector3 randomNearbyPosition =  new Vector3(transform.position.x + Random.Range(-20, 20),
-                                                        transform.position.y,
-                                                        transform.position.z + Random.Range(-20, 20));
-            agent.SetDestination(randomNearbyPosition);
 
-            wanderTimer = 0;
-        }
-    }
-=======
     public void Wander() { }
->>>>>>> parent of 33492d5... Camera fix, player death, arrow, spawn random place, navmesh AI,etc (#31)
 
     public void Dead() 
     {
