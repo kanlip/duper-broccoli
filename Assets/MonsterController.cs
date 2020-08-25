@@ -1,18 +1,4 @@
-/* Start Header **************************************************************/
-/*!
-\file       NetworkPlayerAnimatorManager.cs
-\author     Eugene Lee Yuih Chin, Sukphasuth Lipipan (Kan), developer@exitgames.com
-\StudentNo  6572595
-\par        xelycx@gmail.com
-\date       15.8.2020
-\brief
-
-Reproduction or disclosure of this file or its contents
-without the prior written consent of author is prohibited.
-*/
-/* End Header ****************************************************************/
-
-
+﻿
 using UnityEngine;
 
 using Com.MyCompany.MyGame;
@@ -49,12 +35,8 @@ public class MonsterController : MonoBehaviour
     [SerializeField]
     public GameObject enemyUIPrefab;
 
-
     private NavMeshAgent agent;
     GameObject playerGO;
-
-    float timeElapsed = 0;
-    float wanderTimer = 0;
 
     private void Start()
     {
@@ -69,8 +51,6 @@ public class MonsterController : MonoBehaviour
             GameObject _uiGo = Instantiate(this.enemyUIPrefab);
             _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
         }
-
-        agent = GetComponent<NavMeshAgent>();
     }
     private void Awake()
     {
@@ -89,37 +69,14 @@ public class MonsterController : MonoBehaviour
         //}
 
 
-        timeElapsed += Time.deltaTime;
-        wanderTimer += Time.deltaTime;
-
-        if (agent.velocity.magnitude > 0.1f) //&& !MonsterState.Attack)
+        if (currentState != MonsterState.Dead)
         {
-            _enemyAnimator.SetTrigger(EnemyAnimation.Run.ToString());
-            animationState = EnemyAnimation.Run;
+            DoThink();
+            DoState();
         }
-        else
-        {
-            _enemyAnimator.SetTrigger(EnemyAnimation.Idle.ToString());
-            animationState = EnemyAnimation.Idle;
-        }
-
-
-        if (timeElapsed > 1)
-
-        {
-            if (currentState != MonsterState.Dead)
-            {
-                DoThink();
-                DoState();
-            }
-            timeElapsed = 0;
-        }
-
-
         //Seek();
 
-
-        //if (attackCoolDownTimer < attackCoolDown) { attackCoolDownTimer += Time.deltaTime; }
+    //if (attackCoolDownTimer < attackCoolDown) { attackCoolDownTimer += Time.deltaTime; }
     }
 
     public void DoThink()
@@ -128,10 +85,7 @@ public class MonsterController : MonoBehaviour
         var angleOfView = Vector3.Angle(direction, transform.forward);
 
         //acquire target range
-
-
-
-        if (direction.magnitude < 20 )//&& angleOfView < 40)
+        if (direction.magnitude < 30 && angleOfView < 40)
         {
             if(agent)
                 agent.isStopped = false;
@@ -151,10 +105,9 @@ public class MonsterController : MonoBehaviour
         }
         else 
         {
-            if (currentState != MonsterState.Wander)
-            {
-                currentState = MonsterState.Idle;
-            }
+            currentState = MonsterState.Idle;
+            
+            //currentState = MonsterState.Seek;
         }
     }
 
@@ -198,7 +151,11 @@ public class MonsterController : MonoBehaviour
     {
         if (currentState != MonsterState.Dead)
         {
+            _enemyAnimator.SetTrigger(EnemyAnimation.Run.ToString());
+            animationState = EnemyAnimation.Run;
+            //transform.Translate(0, 0, 0.2F);
 
+            agent = GetComponent<NavMeshAgent>();
             playerGO = GameObject.FindGameObjectWithTag("Player");
             if (playerGO && agent)
             {
@@ -215,17 +172,10 @@ public class MonsterController : MonoBehaviour
 
     public void Wander()
     {
-        if (wanderTimer > 5)
-        {
-            Vector3 randomNearbyPosition =  new Vector3(transform.position.x + Random.Range(-20, 20),
-                                                        transform.position.y,
-                                                        transform.position.z + Random.Range(-20, 20));
+        Vector3 randomNearbyPosition = new Vector3(transform.position.x + Random.Range(0,20), 0, transform.position.z + Random.Range(0, 20));
+        if (agent)
             agent.SetDestination(randomNearbyPosition);
-
-            wanderTimer = 0;
-        }
     }
-
 
     public void Dead() 
     {
