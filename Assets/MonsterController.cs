@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-﻿/* Start Header **************************************************************/
+/* Start Header **************************************************************/
 /*!
 \file       NetworkPlayerAnimatorManager.cs
 \author     Eugene Lee Yuih Chin, Sukphasuth Lipipan (Kan), developer@exitgames.com
@@ -13,18 +12,16 @@ without the prior written consent of author is prohibited.
 */
 /* End Header ****************************************************************/
 
-=======
-﻿
->>>>>>> 33492d5ad02a487e958cf07b1467b5db72e1244e
+using System;
+>>>>>>> parent of 33492d5... Camera fix, player death, arrow, spawn random place, navmesh AI,etc (#31)
 using UnityEngine;
 
 using Com.MyCompany.MyGame;
 using System.Collections;
-using UnityEngine.AI;
 
-public class MonsterController : MonoBehaviour
+public class MonsterController : MonoBehaviour, IEnemy
 {
-    public enum MonsterState
+    enum MonsterState
     {
         Idle,
         Seek,
@@ -33,13 +30,13 @@ public class MonsterController : MonoBehaviour
         Dead
     }
 
-    public int CurrentHealth;
-    public int MaxHealth;
-    public int Exp;
-    public int MovementSpeed;
-    public int AttackSpeed;
+    public int MaxHealth { get; set; }
+    public int Exp { get; set; }
+    public int MovementSpeed { get; set; }
+    public int AttackSpeed { get; set; }
     public EnemyAnimation animationState { get; set; }
 
+    public int CurrentHealth;// { get; set; }
     private GameObject _player;
     private Transform _playerTransform;
     private Animator _enemyAnimator;
@@ -47,17 +44,20 @@ public class MonsterController : MonoBehaviour
     private bool canAttack = true;
     private float attackCoolDown = 2.0f;
 
-    public MonsterState currentState = MonsterState.Idle;
+    private MonsterState currentState = MonsterState.Idle;
 
     [SerializeField]
     public GameObject enemyUIPrefab;
 
+<<<<<<< HEAD
     private NavMeshAgent agent;
     GameObject playerGO;
 
     float timeElapsed = 0;
     float wanderTimer = 0;
 
+=======
+>>>>>>> parent of 33492d5... Camera fix, player death, arrow, spawn random place, navmesh AI,etc (#31)
     private void Start()
     {
         _enemyAnimator = GetComponent<Animator>();
@@ -89,6 +89,7 @@ public class MonsterController : MonoBehaviour
         //    _enemyAnimator.SetTrigger(EnemyAnimation.Idle.ToString());
         //    return;
         //}
+<<<<<<< HEAD
         timeElapsed += Time.deltaTime;
         wanderTimer += Time.deltaTime;
 
@@ -105,6 +106,9 @@ public class MonsterController : MonoBehaviour
 
 
         if (timeElapsed > 1)
+=======
+        if (currentState != MonsterState.Dead)
+>>>>>>> parent of 33492d5... Camera fix, player death, arrow, spawn random place, navmesh AI,etc (#31)
         {
             if (currentState != MonsterState.Dead)
             {
@@ -113,9 +117,13 @@ public class MonsterController : MonoBehaviour
             }
             timeElapsed = 0;
         }
+<<<<<<< HEAD
         //Seek();
 
 
+=======
+        
+>>>>>>> parent of 33492d5... Camera fix, player death, arrow, spawn random place, navmesh AI,etc (#31)
         //if (attackCoolDownTimer < attackCoolDown) { attackCoolDownTimer += Time.deltaTime; }
     }
 
@@ -125,31 +133,41 @@ public class MonsterController : MonoBehaviour
         var angleOfView = Vector3.Angle(direction, transform.forward);
 
         //acquire target range
+<<<<<<< HEAD
         if (direction.magnitude < 20 )//&& angleOfView < 40)
+=======
+        if (direction.magnitude < 10 && angleOfView < 40)
+>>>>>>> parent of 33492d5... Camera fix, player death, arrow, spawn random place, navmesh AI,etc (#31)
         {
-            if(agent)
-                agent.isStopped = false;
             direction.y = 0;
             transform.rotation = Quaternion.LookRotation(direction);
-            currentState = MonsterState.Seek;
 
             //within attack target range
-            if (direction.magnitude < 2.5)
+            if (direction.magnitude < 4)
             {
                 //if (attackCoolDownTimer > attackCoolDown) { Attack(); }
+
+                currentState = MonsterState.Seek;
                 if (canAttack) { DoAttack(); }
                 //transform.Translate(0,0,0.04f);
-                if (agent)
-                    agent.isStopped = true;
             }
         }
         else 
         {
+<<<<<<< HEAD
             if (currentState != MonsterState.Wander)
             {
                 currentState = MonsterState.Idle;
             }
+=======
+            currentState = MonsterState.Idle;
+>>>>>>> parent of 33492d5... Camera fix, player death, arrow, spawn random place, navmesh AI,etc (#31)
         }
+        //else
+        //{
+        //    _enemyAnimator.SetTrigger(EnemyAnimation.Idle.ToString());
+        //    CurrentBotState = EnemyAnimation.Idle;
+        //}
     }
 
     public void DoState()
@@ -181,23 +199,24 @@ public class MonsterController : MonoBehaviour
     {
         _enemyAnimator.SetTrigger(EnemyAnimation.Idle.ToString());
         animationState = EnemyAnimation.Idle;
-
-        if (Random.Range(0, 100) > 90)
-        {
-            currentState = MonsterState.Wander;
-        }
     }
 
     public void Seek()
     {
         if (currentState != MonsterState.Dead)
         {
+<<<<<<< HEAD
             playerGO = GameObject.FindGameObjectWithTag("Player");
             if (playerGO && agent)
             {
                 Debug.Log("move");
                 agent.SetDestination(playerGO.transform.position);
             }
+=======
+            _enemyAnimator.SetTrigger(EnemyAnimation.Run.ToString());
+            transform.Translate(0, 0, 0.2F);
+            animationState = EnemyAnimation.Run;
+>>>>>>> parent of 33492d5... Camera fix, player death, arrow, spawn random place, navmesh AI,etc (#31)
         }
     }
 
@@ -206,6 +225,7 @@ public class MonsterController : MonoBehaviour
 
     }
 
+<<<<<<< HEAD
     public void Wander()
     {
         if (wanderTimer > 5)
@@ -218,12 +238,14 @@ public class MonsterController : MonoBehaviour
             wanderTimer = 0;
         }
     }
+=======
+    public void Wander() { }
+>>>>>>> parent of 33492d5... Camera fix, player death, arrow, spawn random place, navmesh AI,etc (#31)
 
     public void Dead() 
     {
         canAttack = false;
         _player = null;
-        gameObject.GetComponent<NavMeshAgent>().isStopped = true;
     }
 
     public void DoAttack()

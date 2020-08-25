@@ -14,7 +14,7 @@ without the prior written consent of author is prohibited.
 using UnityEngine;
 using Photon.Pun;
 
-public class SpawnManager : MonoBehaviourPun
+public class SpawnManager : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject [] enemyPrefab;
@@ -30,32 +30,27 @@ public class SpawnManager : MonoBehaviourPun
 
     void Start()
     {
-        if(PhotonNetwork.IsMasterClient)
+        //spawn 10 random enemy small or med
+        for (int i = 0; i < EnemyToSpawnAmount; i++)
         {
-            //spawn 10 random enemy small or med
-            for (int i = 0; i < EnemyToSpawnAmount; i++)
-            {
-                //set a random spawn index
-                spawnPointIndex = Random.Range(0, spawnPoints.Length);
+            //set a random spawn index
+            spawnPointIndex = Random.Range(0, spawnPoints.Length);
 
-                //set a random enemy index
-                enemyIndex = Random.Range(0, enemyPrefab.Length);
+            //set a random enemy index
+            enemyIndex = Random.Range(0, enemyPrefab.Length);
 
-                //get the place where enemy will spawn at
-                Transform spawnPosition = spawnPoints[spawnPointIndex];
+            //get the place where enemy will spawn at
+            Transform spawnPosition = spawnPoints[spawnPointIndex];
 
-                Vector3 spawnRandomOffset = new Vector3(Random.Range(-50, 50), 0, Random.Range(-50, 50));
-
-                //spawn enemy
-                //Instantiate(enemyPrefab[enemyIndex], spawnPosition.position, spawnPosition.rotation);
-                PhotonNetwork.Instantiate(enemyPrefab[enemyIndex].name, spawnPosition.position+ spawnRandomOffset, Quaternion.AngleAxis(Random.Range(0, 360), Vector3.up), 0);
-            }
-
-            //find all the gameobject tag with enemy
-            enemyCount = GameObject.FindGameObjectsWithTag("Enemy");
-
-            counter = enemyCount.Length;
+            //spawn enemy
+            //Instantiate(enemyPrefab[enemyIndex], spawnPosition.position, spawnPosition.rotation);
+            PhotonNetwork.Instantiate(enemyPrefab[enemyIndex].name, spawnPosition.position, Quaternion.identity, 0);
         }
+
+        //find all the gameobject tag with enemy
+        enemyCount = GameObject.FindGameObjectsWithTag("Enemy");
+
+        counter = enemyCount.Length;
     }
 
     // Update is called once per frame
