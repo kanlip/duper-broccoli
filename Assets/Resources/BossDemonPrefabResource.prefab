@@ -624,7 +624,10 @@ MonoBehaviour:
   Exp: 15
   MovementSpeed: 0
   AttackSpeed: 0
+<<<<<<< HEAD
   currentState: 0
+=======
+>>>>>>> 33492d5ad02a487e958cf07b1467b5db72e1244e
   enemyUIPrefab: {fileID: 6258586399017396571, guid: 46817af115315364a8eb0e019c1d24ab,
     type: 3}
 --- !u!54 &6374102507497627663

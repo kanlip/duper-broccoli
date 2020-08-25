@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿/* Start Header **************************************************************/
 /*!
 \file       NetworkPlayerAnimatorManager.cs
@@ -12,6 +13,9 @@ without the prior written consent of author is prohibited.
 */
 /* End Header ****************************************************************/
 
+=======
+﻿
+>>>>>>> 33492d5ad02a487e958cf07b1467b5db72e1244e
 using UnityEngine;
 
 using Com.MyCompany.MyGame;

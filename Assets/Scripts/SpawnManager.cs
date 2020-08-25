@@ -44,7 +44,6 @@ public class SpawnManager : MonoBehaviourPun
                 //get the place where enemy will spawn at
                 Transform spawnPosition = spawnPoints[spawnPointIndex];
 
-
                 Vector3 spawnRandomOffset = new Vector3(Random.Range(-50, 50), 0, Random.Range(-50, 50));
 
                 //spawn enemy
