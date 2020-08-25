@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: -5586702074408841830}
   - component: {fileID: 2800376319180699445}
   m_Layer: 0
-  m_Name: ArcherPrefabResourceBackup
+  m_Name: ArcherPrefabResource
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -194,11 +194,10 @@ MonoBehaviour:
   fireCoolDown: 0.5
   SENS_HOR: 3
   SENS_VER: 2
+  Health: 100
   playerUiPrefab: {fileID: 3009218558746257231, guid: af83eb298fb72534282764af47f98ce2,
     type: 3}
   beams: {fileID: 1732003110857383334}
-  Health: 100
-  maxHealth: 0
 --- !u!114 &-5586702074408841830
 MonoBehaviour:
   m_ObjectHideFlags: 0

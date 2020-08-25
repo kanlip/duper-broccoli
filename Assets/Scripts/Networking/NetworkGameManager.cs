@@ -39,7 +39,11 @@ namespace Com.MyCompany.MyGame
                 {
                     Debug.LogFormat("Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
                     // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
+<<<<<<< HEAD
                     PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(Random.Range(-50,50), 25.0f, Random.Range(-50, 50)), Quaternion.identity, 0);
+=======
+                    PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0.0f, 25.0f, 0.0f), Quaternion.identity, 0);
+>>>>>>> parent of 33492d5... Camera fix, player death, arrow, spawn random place, navmesh AI,etc (#31)
                 }
                 else
                 {

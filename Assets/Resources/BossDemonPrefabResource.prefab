@@ -504,15 +504,12 @@ GameObject:
   m_Component:
   - component: {fileID: 5045573066744450907}
   - component: {fileID: 5045573066744321454}
+  - component: {fileID: 5045573066744321455}
   - component: {fileID: 7145340136231254890}
   - component: {fileID: 8960899580708083130}
   - component: {fileID: 527067856769716316}
-  - component: {fileID: 1130438205222127364}
-  - component: {fileID: 6374102507497627663}
-  - component: {fileID: -3750358184603672419}
-  - component: {fileID: 3686305022299433725}
   m_Layer: 0
-  m_Name: BossDemonPrefabResource
+  m_Name: boss-demon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -548,12 +545,24 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 5f41f6fa80258495b8c31643ac54a340, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5045573066744321455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5045573066744353467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1b1004b838f4e929da8052f8e5bf492, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &7145340136231254890
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -598,15 +607,15 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  observableSearch: 0
-  Synchronization: 3
+  observableSearch: 2
+  Synchronization: 0
   OwnershipTransfer: 0
   ObservedComponents:
   - {fileID: 8960899580708083130}
-  - {fileID: -3750358184603672419}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+<<<<<<< HEAD
 --- !u!114 &1130438205222127364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -684,6 +693,8 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+=======
+>>>>>>> parent of 33492d5... Camera fix, player death, arrow, spawn random place, navmesh AI,etc (#31)
 --- !u!1 &5045573066744353469
 GameObject:
   m_ObjectHideFlags: 0
