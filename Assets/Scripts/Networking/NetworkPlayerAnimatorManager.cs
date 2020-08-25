@@ -21,7 +21,7 @@ namespace Com.MyCompany.MyGame
 	public class NetworkPlayerAnimatorManager : MonoBehaviourPun 
 	{
         #region Private Fields
-        public float fireCoolDown = 0.5f;
+        public float fireCoolDown = 0.3f;
         public float moveSpeed = 1.5f;
         public float attackSpeed = 1.5f;
         #endregion
@@ -130,7 +130,12 @@ namespace Com.MyCompany.MyGame
                 elapsedTime = 0;
             }
         }
+
+        public void DoDeadAnimation()
+        {
+            animator.SetTrigger("Dead");
+        }
 #endregion
 
-	}
+    }
 }
