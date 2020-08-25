@@ -65,6 +65,9 @@ namespace Com.MyCompany.MyGame
 
         GameObject potionButton;
         GameObject amountOfPotion;
+        GameObject shootSound;
+
+        GameObject gameOverPanel;
 
         [SerializeField]
         private float Health;
@@ -72,7 +75,6 @@ namespace Com.MyCompany.MyGame
         private float maxHealth;
         private float restoreHp = 10f;
         private int playerPotionAmt = 5;
-        
 
         #endregion
 
@@ -163,6 +165,12 @@ namespace Com.MyCompany.MyGame
             //set the max health to current health
             maxHealth = this.Health;
 
+            //get the game over panel
+            gameOverPanel = GameObject.FindWithTag("GameOver");
+            gameOverPanel.SetActive(false);
+
+            //shooting sound
+
 #if UNITY_5_4_OR_NEWER
             // Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
@@ -204,6 +212,8 @@ namespace Com.MyCompany.MyGame
                     GetComponentInChildren<UnityStandardAssets.Cameras.FreeLookCam>().enabled = false;
                     GetComponentInChildren<NetworkPlayerAnimatorManager>().enabled = false;
                     //NetworkGameManager.Instance.LeaveRoom();
+
+                    gameOverPanel.SetActive(true);
                 }
             }
             
@@ -314,6 +324,8 @@ namespace Com.MyCompany.MyGame
             GameObject arrow = Instantiate(arrowPrefab, arrowSpawn.position, arrowSpawn.transform.rotation);
             //GameObject arrow = Instantiate(arrowPrefab, arrowSpawn.position, arrowSpawn.transform.rotation);
             arrow.GetComponent<Arrow>().SetOwner(this.gameObject);
+            shootSound = GameObject.FindWithTag("ShootSound");
+            shootSound.GetComponent<AudioSource>().Play();
         }
 
         //[PunRPC]
@@ -339,9 +351,15 @@ namespace Com.MyCompany.MyGame
             //enable the jostick to be able to drag around freely
             Cursor.lockState = CursorLockMode.None;
 
+            Debug.Log("Move cam");
+
             //right joystick movement to rotate camera
             float touchX = rightJoystick.GetComponent<FixedJoystick>().Horizontal * SENS_HOR;
-            transform.Rotate(0, touchX, 0);
+            GameObject cam = GameObject.FindWithTag("Player");
+           // cam.transform.GetChild(2).GetChild(0).Rotate(0, touchX, 0);
+            cam.transform.Rotate(0, touchX, 0);
+            //cam.transform.Rotate(0, touchX, 0);
+            //transform.GetChild(2).GetChild(0).Rotate(0, touchX, 0);
 
             //press button to fire at the enemy
             attackButton.GetComponent<Button>().onClick.AddListener(attackButtonPressed);        
@@ -433,6 +451,7 @@ namespace Com.MyCompany.MyGame
             {
                 this.GetComponent<PhotonView>().RPC("Shoot", RpcTarget.All);
                 elapsedTime = 0;
+
             }
         }
 
