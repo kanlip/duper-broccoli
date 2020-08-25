@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 2800376319180699445}
   - component: {fileID: 2565311204880107066}
   - component: {fileID: -8113387169920081448}
+  - component: {fileID: 5264473053700934471}
   m_Layer: 0
   m_Name: ArcherPrefabResource
   m_TagString: Player
@@ -38,6 +39,7 @@ Transform:
   m_Children:
   - {fileID: 4226606370274451060}
   - {fileID: 8082036756167862892}
+  - {fileID: 3323308279772476973}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -93,7 +95,7 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  observableSearch: 2
+  observableSearch: 0
   Synchronization: 3
   OwnershipTransfer: 0
   ObservedComponents:
@@ -119,13 +121,13 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 1
-    SynchronizeType: 1
+    SynchronizeType: 0
     Name: Speed
   - Type: 1
-    SynchronizeType: 1
+    SynchronizeType: 0
     Name: Direction
   - Type: 1
-    SynchronizeType: 1
+    SynchronizeType: 0
     Name: Vertical_f
   - Type: 4
     SynchronizeType: 0
@@ -137,10 +139,10 @@ MonoBehaviour:
     SynchronizeType: 0
     Name: Jump
   - Type: 9
-    SynchronizeType: 1
+    SynchronizeType: 0
     Name: Shoot
   - Type: 9
-    SynchronizeType: 1
+    SynchronizeType: 0
     Name: Dead
   m_SynchronizeLayers:
   - SynchronizeType: 0
@@ -231,6 +233,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b1c62a049a83194594d736db2d06d04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!54 &5264473053700934471
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100030}
+  serializedVersion: 2
+  m_Mass: 10
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!1 &897208489202782390
 GameObject:
   m_ObjectHideFlags: 0
@@ -447,6 +465,89 @@ Transform:
   m_Father: {fileID: 400030}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -5, y: 0, z: 0}
+--- !u!1 &8375639854949006883
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3323308279772476973}
+  - component: {fileID: 4672766298948229615}
+  - component: {fileID: 6873960493219766777}
+  m_Layer: 0
+  m_Name: Camera
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3323308279772476973
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8375639854949006883}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2, z: -2.71}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 400030}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!20 &4672766298948229615
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8375639854949006883}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_FocalLength: 50
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!81 &6873960493219766777
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8375639854949006883}
+  m_Enabled: 1
 --- !u!1001 &8620893431510879623
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -513,6 +614,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: erika_archer
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 071272a017c29a94dbbbdecc9d701212,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 071272a017c29a94dbbbdecc9d701212,
         type: 3}
