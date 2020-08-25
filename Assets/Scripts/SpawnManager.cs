@@ -1,5 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿/* Start Header **************************************************************/
+/*!
+\file       NetworkPlayerAnimatorManager.cs
+\author     Eugene Lee Yuih Chin, Sukphasuth Lipipan (Kan), developer@exitgames.com
+\StudentNo  6572595
+\par        xelycx@gmail.com
+\date       15.8.2020
+\brief
+
+Reproduction or disclosure of this file or its contents
+without the prior written consent of author is prohibited.
+*/
+/* End Header ****************************************************************/
 using UnityEngine;
 using Photon.Pun;
 
@@ -34,7 +45,7 @@ public class SpawnManager : MonoBehaviourPun
                 Transform spawnPosition = spawnPoints[spawnPointIndex];
 
 
-                Vector3 spawnRandomOffset = new Vector3(Random.Range(0, 20), 0, Random.Range(0, 20));
+                Vector3 spawnRandomOffset = new Vector3(Random.Range(-50, 50), 0, Random.Range(-50, 50));
 
                 //spawn enemy
                 //Instantiate(enemyPrefab[enemyIndex], spawnPosition.position, spawnPosition.rotation);
