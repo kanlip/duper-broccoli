@@ -14,7 +14,7 @@ without the prior written consent of author is prohibited.
 using UnityEngine;
 using Photon.Pun;
 
-public class SpawnManager : MonoBehaviour
+public class SpawnManager : MonoBehaviourPun
 {
     // Start is called before the first frame update
     public GameObject [] enemyPrefab;
@@ -30,12 +30,15 @@ public class SpawnManager : MonoBehaviour
 
     void Start()
     {
-        //spawn 10 random enemy small or med
-        for (int i = 0; i < EnemyToSpawnAmount; i++)
+        if(PhotonNetwork.IsMasterClient)
         {
-            //set a random spawn index
-            spawnPointIndex = Random.Range(0, spawnPoints.Length);
+            //spawn 10 random enemy small or med
+            for (int i = 0; i < EnemyToSpawnAmount; i++)
+            {
+                //set a random spawn index
+                spawnPointIndex = Random.Range(0, spawnPoints.Length);
 
+<<<<<<< HEAD
             //set a random enemy index
             enemyIndex = Random.Range(0, enemyPrefab.Length);
 
@@ -48,8 +51,26 @@ public class SpawnManager : MonoBehaviour
         }
         //find all the gameobject tag with enemy
         enemyCount = GameObject.FindGameObjectsWithTag("Enemy");
+=======
+                //set a random enemy index
+                enemyIndex = Random.Range(0, enemyPrefab.Length);
 
-        counter = enemyCount.Length;
+                //get the place where enemy will spawn at
+                Transform spawnPosition = spawnPoints[spawnPointIndex];
+
+                Vector3 spawnRandomOffset = new Vector3(Random.Range(-50, 50), 0, Random.Range(-50, 50));
+
+                //spawn enemy
+                //Instantiate(enemyPrefab[enemyIndex], spawnPosition.position, spawnPosition.rotation);
+                PhotonNetwork.Instantiate(enemyPrefab[enemyIndex].name, spawnPosition.position+ spawnRandomOffset, Quaternion.AngleAxis(Random.Range(0, 360), Vector3.up), 0);
+            }
+
+            //find all the gameobject tag with enemy
+            enemyCount = GameObject.FindGameObjectsWithTag("Enemy");
+>>>>>>> parent of f95c11c... Revert #31 test
+
+            counter = enemyCount.Length;
+        }
     }
 
     // Update is called once per frame

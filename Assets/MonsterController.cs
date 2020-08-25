@@ -12,17 +12,23 @@ without the prior written consent of author is prohibited.
 */
 /* End Header ****************************************************************/
 
+<<<<<<< HEAD
 using System;
 
+=======
+=======
+﻿
+>>>>>>> 33492d5ad02a487e958cf07b1467b5db72e1244e
+>>>>>>> parent of f95c11c... Revert #31 test
 using UnityEngine;
 
 using Com.MyCompany.MyGame;
 using System.Collections;
 using UnityEngine.AI;
 
-public class MonsterController : MonoBehaviour, IEnemy
+public class MonsterController : MonoBehaviour
 {
-    enum MonsterState
+    public enum MonsterState
     {
         Idle,
         Seek,
@@ -31,13 +37,13 @@ public class MonsterController : MonoBehaviour, IEnemy
         Dead
     }
 
-    public int MaxHealth { get; set; }
-    public int Exp { get; set; }
-    public int MovementSpeed { get; set; }
-    public int AttackSpeed { get; set; }
+    public int CurrentHealth;
+    public int MaxHealth;
+    public int Exp;
+    public int MovementSpeed;
+    public int AttackSpeed;
     public EnemyAnimation animationState { get; set; }
 
-    public int CurrentHealth;// { get; set; }
     private GameObject _player;
     private Transform _playerTransform;
     private Animator _enemyAnimator;
@@ -45,12 +51,15 @@ public class MonsterController : MonoBehaviour, IEnemy
     private bool canAttack = true;
     private float attackCoolDown = 2.0f;
 
-    private MonsterState currentState = MonsterState.Idle;
+    public MonsterState currentState = MonsterState.Idle;
 
     [SerializeField]
     public GameObject enemyUIPrefab;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of f95c11c... Revert #31 test
     private NavMeshAgent agent;
     GameObject playerGO;
 
@@ -88,9 +97,28 @@ public class MonsterController : MonoBehaviour, IEnemy
         //    _enemyAnimator.SetTrigger(EnemyAnimation.Idle.ToString());
         //    return;
         //}
+<<<<<<< HEAD
 
         if (currentState != MonsterState.Dead)
 
+=======
+        timeElapsed += Time.deltaTime;
+        wanderTimer += Time.deltaTime;
+
+        if (agent.velocity.magnitude > 0.1f) //&& !MonsterState.Attack)
+        {
+            _enemyAnimator.SetTrigger(EnemyAnimation.Run.ToString());
+            animationState = EnemyAnimation.Run;
+        }
+        else
+        {
+            _enemyAnimator.SetTrigger(EnemyAnimation.Idle.ToString());
+            animationState = EnemyAnimation.Idle;
+        }
+
+
+        if (timeElapsed > 1)
+>>>>>>> parent of f95c11c... Revert #31 test
         {
             if (currentState != MonsterState.Dead)
             {
@@ -99,6 +127,11 @@ public class MonsterController : MonoBehaviour, IEnemy
             }
             timeElapsed = 0;
         }
+<<<<<<< HEAD
+=======
+        //Seek();
+
+>>>>>>> parent of f95c11c... Revert #31 test
 
         //if (attackCoolDownTimer < attackCoolDown) { attackCoolDownTimer += Time.deltaTime; }
     }
@@ -109,33 +142,42 @@ public class MonsterController : MonoBehaviour, IEnemy
         var angleOfView = Vector3.Angle(direction, transform.forward);
 
         //acquire target range
+<<<<<<< HEAD
 
 
         if (direction.magnitude < 10 && angleOfView < 40)
+=======
+        if (direction.magnitude < 20 )//&& angleOfView < 40)
+>>>>>>> parent of f95c11c... Revert #31 test
         {
+            if(agent)
+                agent.isStopped = false;
             direction.y = 0;
             transform.rotation = Quaternion.LookRotation(direction);
+            currentState = MonsterState.Seek;
 
             //within attack target range
-            if (direction.magnitude < 4)
+            if (direction.magnitude < 2.5)
             {
                 //if (attackCoolDownTimer > attackCoolDown) { Attack(); }
-
-                currentState = MonsterState.Seek;
                 if (canAttack) { DoAttack(); }
                 //transform.Translate(0,0,0.04f);
+                if (agent)
+                    agent.isStopped = true;
             }
         }
         else 
         {
+<<<<<<< HEAD
 
             currentState = MonsterState.Idle;
+=======
+            if (currentState != MonsterState.Wander)
+            {
+                currentState = MonsterState.Idle;
+            }
+>>>>>>> parent of f95c11c... Revert #31 test
         }
-        //else
-        //{
-        //    _enemyAnimator.SetTrigger(EnemyAnimation.Idle.ToString());
-        //    CurrentBotState = EnemyAnimation.Idle;
-        //}
     }
 
     public void DoState()
@@ -167,16 +209,30 @@ public class MonsterController : MonoBehaviour, IEnemy
     {
         _enemyAnimator.SetTrigger(EnemyAnimation.Idle.ToString());
         animationState = EnemyAnimation.Idle;
+
+        if (Random.Range(0, 100) > 90)
+        {
+            currentState = MonsterState.Wander;
+        }
     }
 
     public void Seek()
     {
         if (currentState != MonsterState.Dead)
         {
+<<<<<<< HEAD
 
             _enemyAnimator.SetTrigger(EnemyAnimation.Run.ToString());
             transform.Translate(0, 0, 0.2F);
             animationState = EnemyAnimation.Run;
+=======
+            playerGO = GameObject.FindGameObjectWithTag("Player");
+            if (playerGO && agent)
+            {
+                Debug.Log("move");
+                agent.SetDestination(playerGO.transform.position);
+            }
+>>>>>>> parent of f95c11c... Revert #31 test
         }
     }
 
@@ -185,13 +241,29 @@ public class MonsterController : MonoBehaviour, IEnemy
 
     }
 
+<<<<<<< HEAD
 
     public void Wander() { }
+=======
+    public void Wander()
+    {
+        if (wanderTimer > 5)
+        {
+            Vector3 randomNearbyPosition =  new Vector3(transform.position.x + Random.Range(-20, 20),
+                                                        transform.position.y,
+                                                        transform.position.z + Random.Range(-20, 20));
+            agent.SetDestination(randomNearbyPosition);
+
+            wanderTimer = 0;
+        }
+    }
+>>>>>>> parent of f95c11c... Revert #31 test
 
     public void Dead() 
     {
         canAttack = false;
         _player = null;
+        gameObject.GetComponent<NavMeshAgent>().isStopped = true;
     }
 
     public void DoAttack()
