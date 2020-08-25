@@ -30,15 +30,17 @@ namespace Com.MyCompany.MyGame
         #region Public Fields
         public GameObject arrowPrefab;
         public Transform arrowSpawn;
-        public float fireCoolDown = 0.5f;
+        public float fireCoolDown = 0.3f;
 
         //camera left right
         public float SENS_HOR = 3.0f;
         public float SENS_VER = 2.0f;
 
+        private bool TPSCamInitFinished = false;
+
         //[Tooltip("The current Health of our player")]
         //public float Health = 1f;
-       
+        public bool isDead = false;
 
         [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
         public static GameObject LocalPlayerInstance;
@@ -120,6 +122,15 @@ namespace Com.MyCompany.MyGame
                 {
                     _cameraWork.OnStartFollowing();
                 }
+
+                Camera cam = Camera.main;
+                if (cam != null)
+                {
+                    this.GetComponent<TPSCamera>().enabled = true;
+                    //this.GetComponent<UnityStandardAssets.Cameras.FreeLookCam>().enabled = true;
+                    //this.GetComponent<UnityStandardAssets.Cameras.ProtectCameraFromWallClip>().enabled = true;
+
+                }
             }
             else
             {
@@ -178,30 +189,28 @@ namespace Com.MyCompany.MyGame
         /// </summary>
         public void Update()
         {
-            //test to see if the hp goes down
-            if(Input.GetKey(KeyCode.L))
-            {
-                this.Health -= 0.5f;
-                Debug.Log(this.Health);
-            }
-
             elapsedTime += Time.deltaTime;
             // we only process Inputs and check health if we are the local player
-            if (photonView.IsMine)
+            if (photonView.IsMine && !isDead)
             {
-                this.ProcessInputs();
+                if (elapsedTime > 1.7f) { TPSCamInitFinished = true; }
+                if (TPSCamInitFinished) { this.ProcessInputs(); }
 
                 if (this.Health <= 0f)
                 {
                     //play dead
+                    isDead = true;
+                    GetComponent<NetworkPlayerAnimatorManager>().DoDeadAnimation();
+                    GetComponentInChildren<UnityStandardAssets.Cameras.FreeLookCam>().enabled = false;
+                    GetComponentInChildren<NetworkPlayerAnimatorManager>().enabled = false;
                     //NetworkGameManager.Instance.LeaveRoom();
                 }
             }
-
-            if (this.beams != null && this.IsFiring != this.beams.activeInHierarchy)
-            {
-                this.beams.SetActive(this.IsFiring);
-            }
+            
+            //if (this.beams != null && this.IsFiring != this.beams.activeInHierarchy)
+            //{
+            //    this.beams.SetActive(this.IsFiring);
+            //}
         }
 
         /// <summary>
@@ -302,7 +311,8 @@ namespace Com.MyCompany.MyGame
         [PunRPC]
         public void Shoot()
         {
-            GameObject arrow = Instantiate(arrowPrefab, arrowSpawn.position, Camera.main.transform.rotation);
+            GameObject arrow = Instantiate(arrowPrefab, arrowSpawn.position, arrowSpawn.transform.rotation);
+            //GameObject arrow = Instantiate(arrowPrefab, arrowSpawn.position, arrowSpawn.transform.rotation);
             arrow.GetComponent<Arrow>().SetOwner(this.gameObject);
         }
 
@@ -317,7 +327,7 @@ namespace Com.MyCompany.MyGame
         //        this.photonView.RPC("Fire", RpcTarget.All, pos, dir);
         //    }
         //}
-
+        Quaternion lookDirection;
         /// <summary>
         /// Processes the inputs. This MUST ONLY BE USED when the player has authority over this Networked GameObject (photonView.isMine == true)
         /// </summary>
@@ -339,10 +349,25 @@ namespace Com.MyCompany.MyGame
 #else
             if (Input.GetButtonDown("Fire1") && elapsedTime > fireCoolDown)
             {
+                //Camera cam = Camera.main;
+                //Ray rayOrigin = Camera.main.ScreenPointToRay(Input.mousePosition);
+                //RaycastHit hitInfo;
+
+                //if(Physics.Raycast(rayOrigin, out hitInfo))
+                //{
+                //    arrowSpawn.transform.LookAt(hitInfo.point);
+                //}
+
+                //if (Physics.Raycast(arrowSpawn.transform.position, arrowSpawn.transform.up, out hitInfo, Mathf.Infinity))
+                //{
+                //    lookDirection = Quaternion.LookRotation(rayOrigin.direction);
+                //}
+
                 this.GetComponent<PhotonView>().RPC("Shoot", RpcTarget.All);
                 elapsedTime = 0;
             }
 
+            /*
             if (Input.GetButtonDown("Fire2"))
             {
                 // we don't want to fire when we interact with UI buttons for example. IsPointerOverGameObject really means IsPointerOver*UI*GameObject
@@ -365,12 +390,16 @@ namespace Com.MyCompany.MyGame
                     this.IsFiring = false;
                 }
             }
+            */
+            //if (!isDead)
+            //{
+            //    var mouseMove = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
+            //    mouseMove = Vector2.Scale(mouseMove, new Vector2(SENS_HOR, SENS_VER));
 
-            var mouseMove = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
-            mouseMove = Vector2.Scale(mouseMove, new Vector2(SENS_HOR, SENS_VER));
-
-            transform.Rotate(0, mouseMove.x, 0);
+            //    transform.Rotate(0, mouseMove.x, 0);
+            //}
             //transform.Rotate(-mouseMove.y, 0, 0);
+            //Camera.main.transform.Rotate(-mouseMove.y, 0, 0);
 #endif
             if (Input.GetKeyDown(KeyCode.Escape))
                 Cursor.lockState = CursorLockMode.None;
