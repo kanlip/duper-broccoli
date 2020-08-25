@@ -39,10 +39,12 @@ public class TPSCamera : MonoBehaviourPunCallbacks
                 pivotGO.transform.rotation = Quaternion.identity;
                 pivotGO.transform.SetParent(transform, false);
                 cam = Camera.main;
-
-                cam.transform.position = new Vector3(0, 0, -4);
-                cam.transform.rotation = Quaternion.identity;
-                cam.transform.SetParent(GameObject.Find("Pivot").GetComponent<Transform>(), false);
+                if (cam)
+                {
+                    cam.transform.position = new Vector3(0, 0, -4);
+                    cam.transform.rotation = Quaternion.identity;
+                    cam.transform.SetParent(GameObject.Find("Pivot").GetComponent<Transform>(), false);
+                }
             }
         }
     }
