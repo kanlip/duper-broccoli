@@ -1,13 +1,13 @@
 ﻿
-using System;
 using UnityEngine;
 
 using Com.MyCompany.MyGame;
 using System.Collections;
+using UnityEngine.AI;
 
-public class MonsterController : MonoBehaviour, IEnemy
+public class MonsterController : MonoBehaviour
 {
-    enum MonsterState
+    public enum MonsterState
     {
         Idle,
         Seek,
@@ -16,13 +16,13 @@ public class MonsterController : MonoBehaviour, IEnemy
         Dead
     }
 
-    public int MaxHealth { get; set; }
-    public int Exp { get; set; }
-    public int MovementSpeed { get; set; }
-    public int AttackSpeed { get; set; }
+    public int CurrentHealth;
+    public int MaxHealth;
+    public int Exp;
+    public int MovementSpeed;
+    public int AttackSpeed;
     public EnemyAnimation animationState { get; set; }
 
-    public int CurrentHealth;// { get; set; }
     private GameObject _player;
     private Transform _playerTransform;
     private Animator _enemyAnimator;
@@ -30,10 +30,13 @@ public class MonsterController : MonoBehaviour, IEnemy
     private bool canAttack = true;
     private float attackCoolDown = 2.0f;
 
-    private MonsterState currentState = MonsterState.Idle;
+    public MonsterState currentState = MonsterState.Idle;
 
     [SerializeField]
     public GameObject enemyUIPrefab;
+
+    private NavMeshAgent agent;
+    GameObject playerGO;
 
     private void Start()
     {
@@ -64,13 +67,16 @@ public class MonsterController : MonoBehaviour, IEnemy
         //    _enemyAnimator.SetTrigger(EnemyAnimation.Idle.ToString());
         //    return;
         //}
+
+
         if (currentState != MonsterState.Dead)
         {
             DoThink();
             DoState();
         }
-        
-        //if (attackCoolDownTimer < attackCoolDown) { attackCoolDownTimer += Time.deltaTime; }
+        //Seek();
+
+    //if (attackCoolDownTimer < attackCoolDown) { attackCoolDownTimer += Time.deltaTime; }
     }
 
     public void DoThink()
@@ -79,30 +85,30 @@ public class MonsterController : MonoBehaviour, IEnemy
         var angleOfView = Vector3.Angle(direction, transform.forward);
 
         //acquire target range
-        if (direction.magnitude < 10 && angleOfView < 40)
+        if (direction.magnitude < 30 && angleOfView < 40)
         {
+            if(agent)
+                agent.isStopped = false;
             direction.y = 0;
             transform.rotation = Quaternion.LookRotation(direction);
+            currentState = MonsterState.Seek;
 
             //within attack target range
-            if (direction.magnitude < 4)
+            if (direction.magnitude < 2.5)
             {
                 //if (attackCoolDownTimer > attackCoolDown) { Attack(); }
-
-                currentState = MonsterState.Seek;
                 if (canAttack) { DoAttack(); }
                 //transform.Translate(0,0,0.04f);
+                if (agent)
+                    agent.isStopped = true;
             }
         }
         else 
         {
             currentState = MonsterState.Idle;
+            
+            //currentState = MonsterState.Seek;
         }
-        //else
-        //{
-        //    _enemyAnimator.SetTrigger(EnemyAnimation.Idle.ToString());
-        //    CurrentBotState = EnemyAnimation.Idle;
-        //}
     }
 
     public void DoState()
@@ -134,6 +140,11 @@ public class MonsterController : MonoBehaviour, IEnemy
     {
         _enemyAnimator.SetTrigger(EnemyAnimation.Idle.ToString());
         animationState = EnemyAnimation.Idle;
+
+        if (Random.Range(0, 100) > 90)
+        {
+            currentState = MonsterState.Wander;
+        }
     }
 
     public void Seek()
@@ -141,8 +152,16 @@ public class MonsterController : MonoBehaviour, IEnemy
         if (currentState != MonsterState.Dead)
         {
             _enemyAnimator.SetTrigger(EnemyAnimation.Run.ToString());
-            transform.Translate(0, 0, 0.2F);
             animationState = EnemyAnimation.Run;
+            //transform.Translate(0, 0, 0.2F);
+
+            agent = GetComponent<NavMeshAgent>();
+            playerGO = GameObject.FindGameObjectWithTag("Player");
+            if (playerGO && agent)
+            {
+                Debug.Log("move");
+                agent.SetDestination(playerGO.transform.position);
+            }
         }
     }
 
@@ -151,12 +170,18 @@ public class MonsterController : MonoBehaviour, IEnemy
 
     }
 
-    public void Wander() { }
+    public void Wander()
+    {
+        Vector3 randomNearbyPosition = new Vector3(transform.position.x + Random.Range(0,20), 0, transform.position.z + Random.Range(0, 20));
+        if (agent)
+            agent.SetDestination(randomNearbyPosition);
+    }
 
     public void Dead() 
     {
         canAttack = false;
         _player = null;
+        gameObject.GetComponent<NavMeshAgent>().isStopped = true;
     }
 
     public void DoAttack()
