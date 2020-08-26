@@ -132,9 +132,12 @@ namespace Com.MyCompany.MyGame
                 Camera cam = Camera.main;
                 if (cam != null)
                 {
+#if !(UNITY_ANDROID || UNITY_IOS)
                     this.GetComponent<TPSCamera>().enabled = true;
-                    //this.GetComponent<UnityStandardAssets.Cameras.FreeLookCam>().enabled = true;
-                    //this.GetComponent<UnityStandardAssets.Cameras.ProtectCameraFromWallClip>().enabled = true;
+
+#endif
+
+
                 }
             }
             else
@@ -156,6 +159,7 @@ namespace Com.MyCompany.MyGame
             rightJoystick = GameObject.FindWithTag("RotateCam");
             attackButton = GameObject.FindWithTag("AttackButton");
 
+
             potionButton = GameObject.FindWithTag("HealthPotion");
             amountOfPotion = GameObject.FindWithTag("HealthPotionAmount");
 
@@ -172,8 +176,10 @@ namespace Com.MyCompany.MyGame
             flc = GetComponent<UnityStandardAssets.Cameras.FreeLookCam>();
 
             //get the game over panel
-            gameOverPanel = GameObject.FindWithTag("GameOver");
-            gameOverPanel.SetActive(false);
+            
+            gameOverPanel = GameObject.Find("GameOverPanel");
+            if (gameOverPanel)
+                gameOverPanel.SetActive(false);
 
             cameraMove = GameObject.Find("Pivot");
 
@@ -237,7 +243,8 @@ namespace Com.MyCompany.MyGame
             if(isDead)
             {
                 //show the game over panel
-                gameOverPanel.SetActive(true);
+                if(gameOverPanel)
+                    gameOverPanel.SetActive(true);
             }
 
             //if (this.beams != null && this.IsFiring != this.beams.activeInHierarchy)
@@ -330,9 +337,9 @@ namespace Com.MyCompany.MyGame
             _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
         }
 
-        #endregion
+#endregion
 
-        #region Private Methods
+#region Private Methods
 
 
 #if UNITY_5_4_OR_NEWER
@@ -366,16 +373,38 @@ namespace Com.MyCompany.MyGame
         /// <summary>
         /// Processes the inputs. This MUST ONLY BE USED when the player has authority over this Networked GameObject (photonView.isMine == true)
         /// </summary>
+        /// 
+        //GameObject rightJoystick;
+        GameObject playerObject;
         void ProcessInputs()
         {
 
-#if UNITY_ANDROID || UNITY_IOS
+#if (UNITY_ANDROID || UNITY_IOS)
+            //press button to fire at the enemy
+
+            if (attackButton)
+                attackButton.GetComponent<Button>().onClick.AddListener(attackButtonPressed);
 
             //enable the jostick to be able to drag around freely
             Cursor.lockState = CursorLockMode.None;
+            GameObject.Find("MobileManager").GetComponent<MobileManager>().mobileCanvas.SetActive(true);
 
-            //press button to fire at the enemy
-            attackButton.GetComponent<Button>().onClick.AddListener(attackButtonPressed);        
+            rightJoystick = GameObject.FindWithTag("RotateCam");
+
+            float touchX = rightJoystick.GetComponent<FixedJoystick>().Horizontal * 5.0f;
+            transform.Rotate(0, touchX, 0);
+
+
+
+            //if (!isDead)
+            //{
+            //    var mouseMove = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
+            //    mouseMove = Vector2.Scale(mouseMove, new Vector2(SENS_HOR, SENS_VER));
+
+            //    transform.Rotate(0, mouseMove.x, 0);
+            //}
+            //transform.Rotate(-mouseMove.y, 0, 0);
+            //Camera.main.transform.Rotate(-mouseMove.y, 0, 0);
 
 #else
             if (Input.GetButtonDown("Fire1") && elapsedTime > fireCoolDown)
@@ -422,15 +451,7 @@ namespace Com.MyCompany.MyGame
                 }
             }
             */
-            //if (!isDead)
-            //{
-            //    var mouseMove = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
-            //    mouseMove = Vector2.Scale(mouseMove, new Vector2(SENS_HOR, SENS_VER));
 
-            //    transform.Rotate(0, mouseMove.x, 0);
-            //}
-            //transform.Rotate(-mouseMove.y, 0, 0);
-            //Camera.main.transform.Rotate(-mouseMove.y, 0, 0);
 #endif
             if (Input.GetKeyDown(KeyCode.Escape))
                 Cursor.lockState = CursorLockMode.None;

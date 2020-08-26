@@ -1599,7 +1599,7 @@ GameObject:
   - component: {fileID: -5553570153588243791}
   - component: {fileID: 8096745902168335797}
   m_Layer: 0
-  m_Name: SmallDemonPrefabResource
+  m_Name: SmallDemonPrefabResource 1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1676,6 +1676,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 2747434433708146868}
   - {fileID: 491139301213497118}
+  - {fileID: 0}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

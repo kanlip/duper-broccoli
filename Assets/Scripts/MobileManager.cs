@@ -5,7 +5,7 @@ using UnityEngine;
 public class MobileManager : MonoBehaviour
 {
     [SerializeField]
-    GameObject mobileCanvas;
+    public GameObject mobileCanvas;
 
     // Start is called before the first frame update
     void Start()

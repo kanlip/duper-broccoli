@@ -22,16 +22,15 @@ public class TPSCamera : MonoBehaviourPunCallbacks
     Camera cam;
 
     GameObject pivotGO;
-    GameObject rightJoystick;
-    GameObject playerObject;
 
     void Awake()
     {
         // prevent cant find main cam crash for UnityStandardAssets.Cameras,
         // awake cant find cam in photon network
-        // createMainCamera();
+        
         if (photonView.IsMine)
         {
+            createMainCamera();
             //create pivot child to attach gameobject with this script
             pivotGO = new GameObject("Pivot");
             if (pivotGO)
@@ -40,40 +39,22 @@ public class TPSCamera : MonoBehaviourPunCallbacks
                 pivotGO.transform.rotation = Quaternion.identity;
                 pivotGO.transform.SetParent(transform, false);
                 cam = Camera.main;
-                
-             /* if (cam)
+#if !(UNITY_ANDROID || UNITY_IOS)
+                if (cam)
                 {
-                    cam.transform.position = new Vector3(0, 2, -4);
+                    cam.transform.position = new Vector3(0, 0, -4);
                     cam.transform.rotation = Quaternion.identity;
-                    //cam.transform.SetParent(GameObject.Find("Pivot").GetComponent<Transform>(), false);
-                    //cam.transform.SetParent(transform, false);
-                }*/
-
-#if UNITY_ANDROID || UNITY_IOS
-                rightJoystick = GameObject.FindWithTag("RotateCam");
-                playerObject = GameObject.FindWithTag("Player");            
-
-                if (Camera.main && pivotGO)
-                {
-                    //gameObject.AddComponent<ProtectCameraFromWallClip>();
+                    cam.transform.SetParent(GameObject.Find("Pivot").GetComponent<Transform>(), false);
                 }
-#else
+
                 if (Camera.main && pivotGO)
                 {
                     gameObject.AddComponent<FreeLookCam>();
-
-                   // gameObject.AddComponent<ProtectCameraFromWallClip>();
+                    gameObject.AddComponent<ProtectCameraFromWallClip>();
                 }
 #endif
             }
         }
-    }
-
-
-    private void Update()
-    {
-        float touchX = rightJoystick.GetComponent<FixedJoystick>().Horizontal * 5.0f;
-        playerObject.transform.Rotate(0, touchX, 0);
     }
 
     void createMainCamera()
