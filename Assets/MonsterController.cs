@@ -91,7 +91,6 @@ public class MonsterController : MonoBehaviourPun
         //    return;
         //}
 
-
         timeElapsed += Time.deltaTime;
         wanderTimer += Time.deltaTime;
         attackCoolDownTimer += Time.deltaTime;
@@ -139,7 +138,6 @@ public class MonsterController : MonoBehaviourPun
 
     public void DoThink()
     {
-        //var direction = _playerTransform.position - transform.position;
         //var angleOfView = Vector3.Angle(direction, transform.forward);
 
         //acquire target range
@@ -151,32 +149,6 @@ public class MonsterController : MonoBehaviourPun
                 currentState = MonsterState.Idle;
             }
         }
-
-        //if (direction.magnitude < 20)//&& angleOfView < 40)
-        //{
-        //    if (agent)
-        //        agent.isStopped = false;
-        //    direction.y = 0;
-        //    transform.rotation = Quaternion.LookRotation(direction);
-        //    currentState = MonsterState.Seek;
-
-        //    //within attack target range
-        //    if (direction.magnitude < 2.5)
-        //    {
-        //        //if (attackCoolDownTimer > attackCoolDown) { Attack(); }
-        //        if (canAttack) { DoAttack(); }
- 
-        //        if (agent)
-        //            agent.isStopped = true;
-        //    }
-        //}
-        //else
-        //{
-        //    if (currentState != MonsterState.Wander)
-        //    {
-        //        currentState = MonsterState.Idle;
-        //    }
-        //}
     }
 
     public void DoState()
@@ -214,15 +186,17 @@ public class MonsterController : MonoBehaviourPun
 
     public void AcquireTargetPlayer()
     {
+        float nearestDistance = Mathf.Infinity;
         GameObject[] playerGOs = GameObject.FindGameObjectsWithTag("Player");
-
+        targetGO = null;
         for (int i = 0; i<playerGOs.Length; i++)
         {
             if(playerGOs[i] && agent)
             {
                 Vector3 direction = playerGOs[i].transform.position - transform.position;
-                if (direction.magnitude < 20)
+                if (direction.magnitude < 20 && direction.magnitude < nearestDistance)
                 {
+                    nearestDistance = direction.magnitude;
                     agent.isStopped = false;
                     targetGO = playerGOs[i];
                     direction.y = 0;
@@ -234,10 +208,6 @@ public class MonsterController : MonoBehaviourPun
                     {
                         currentState = MonsterState.Attack;
                     }
-                }
-                else
-                {
-                    targetGO = null;
                 }
             }
         }
@@ -294,10 +264,10 @@ public class MonsterController : MonoBehaviourPun
         canAttack = false;
         attackCoolDownTimer = 0.0f;
 
-
         //StartCoroutine(RestoreAttackYield());
     }
 
+    //coroutine doesnt work well with photon????
     //IEnumerator RestoreAttackYield()
     //{
     //    yield return new WaitForSeconds(attackCoolDown);

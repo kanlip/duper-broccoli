@@ -169,7 +169,6 @@ MonoBehaviour:
   isDead: 0
   playerUiPrefab: {fileID: 6258586399017396571, guid: 33d60e676b0a9c445a3ef2585171a153,
     type: 3}
-  beams: {fileID: 0}
   Health: 100
   maxHealth: 0
 --- !u!114 &-5586702074408841830

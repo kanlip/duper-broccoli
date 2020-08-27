@@ -36,8 +36,6 @@ namespace Com.MyCompany.MyGame
         public float SENS_HOR = 3.0f;
         public float SENS_VER = 2.0f;
 
-        private bool TPSCamInitFinished = false;
-
         //[Tooltip("The current Health of our player")]
         //public float Health = 1f;
         public bool isDead = false;
@@ -52,10 +50,6 @@ namespace Com.MyCompany.MyGame
         [Tooltip("The Player's UI GameObject Prefab")]
         [SerializeField]
         public GameObject playerUiPrefab;
-
-        [Tooltip("The Beams GameObject to control")]
-        [SerializeField]
-        private GameObject beams;
 
         //True, when the user is firing
         bool IsFiring;
@@ -89,15 +83,6 @@ namespace Com.MyCompany.MyGame
         /// </summary>
         public void Awake()
         {
-            if (this.beams == null)
-            {
-                //Debug.LogError("<Color=Red><b>Missing</b></Color> Beams Reference.", this);
-            }
-            else
-            {
-                this.beams.SetActive(false);
-            }
-
             // #Important
             // used in GameManager.cs: we keep track of the localPlayer instance to prevent instanciation when levels are synchronized
             if (photonView.IsMine)
@@ -205,7 +190,6 @@ namespace Com.MyCompany.MyGame
         /// <summary>
         /// MonoBehaviour method called on GameObject by Unity on every frame.
         /// Process Inputs if local player.
-        /// Show and hide the beams
         /// Watch for end of game, when local player health is 0.
         /// </summary>
         public void Update()
@@ -216,9 +200,7 @@ namespace Com.MyCompany.MyGame
             // we only process Inputs and check health if we are the local player
             if (!isDead && photonView.IsMine)
             {
-                if (elapsedTime > 1.7f) { TPSCamInitFinished = true; }
-                if (TPSCamInitFinished) { this.ProcessInputs(); }
-
+                this.ProcessInputs();
 
                 if (this.Health <= 0f)
                 {
@@ -245,18 +227,11 @@ namespace Com.MyCompany.MyGame
 
                 //NetworkGameManager.Instance.LeaveRoom();
             }
-
-            //if (this.beams != null && this.IsFiring != this.beams.activeInHierarchy)
-            //{
-            //    this.beams.SetActive(this.IsFiring);
-            //}
         }
 
         /// <summary>
         /// MonoBehaviour method called when the Collider 'other' enters the trigger.
-        /// Affect Health of the Player if the collider is a beam
-        /// Note: when jumping and firing at the same, you'll find that the player's own beam intersects with itself
-        /// One could move the collider further away to prevent this or check if the beam belongs to the player.
+        /// Affect Health of the Player
         /// </summary>
         public void OnTriggerEnter(Collider other)
         {
@@ -264,7 +239,6 @@ namespace Com.MyCompany.MyGame
             {
                 return;
             }
-
 
             //if (other.tag == "Arrow" && Health >= 0
             //&& other.GetComponent<Arrow>().owner != this.gameObject)
@@ -279,18 +253,11 @@ namespace Com.MyCompany.MyGame
             //    this.Health -= 10.0f;
             //    //other.gameObject.SetActive(false);
             //}
-
-            // We are only interested in Beamers
-            // we should be using tags but for the sake of distribution, let's simply check by name.
-            //if (other.name.Contains("Beam"))
-            //{
-            //    this.Health -= 1.0f;
-            //}
         }
 
         /// <summary>
         /// MonoBehaviour method called once per frame for every Collider 'other' that is touching the trigger.
-        /// We're going to affect health while the beams are interesting the player
+        /// We're going to affect health while the colliders are interesting the player
         /// </summary>
         /// <param name="other">Other.</param>
         public void OnTriggerStay(Collider other)
@@ -300,12 +267,6 @@ namespace Com.MyCompany.MyGame
             {
                 return;
             }
-
-            ////should use tags
-            //if (!other.name.Contains("Beam"))
-            //{
-            //    this.Health -= 1.0f * Time.deltaTime;
-            //}
         }
 
 
@@ -370,8 +331,7 @@ namespace Com.MyCompany.MyGame
         //        this.photonView.RPC("Fire", RpcTarget.All, pos, dir);
         //    }
         //}
-        Quaternion lookDirection;
-        Vector3 fireDirection;
+
         /// <summary>
         /// Processes the inputs. This MUST ONLY BE USED when the player has authority over this Networked GameObject (photonView.isMine == true)
         /// </summary>
@@ -396,10 +356,6 @@ namespace Com.MyCompany.MyGame
             float touchX = rightJoystick.GetComponent<FixedJoystick>().Horizontal * 5.0f;
             transform.Rotate(0, touchX, 0);
 
-
-
-
-
 #else
             if (Input.GetButtonDown("Fire1") && elapsedTime > fireCoolDown)
             {
@@ -407,7 +363,6 @@ namespace Com.MyCompany.MyGame
 
                 //RaycastHit hitInfo;
                 //Ray rayOrigin = Camera.main.ScreenPointToRay(Input.mousePosition);
-
 
 
                 //if (Physics.Raycast(arrowSpawn.transform.position, arrowSpawn.transform.forward, out hitInfo))
