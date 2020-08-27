@@ -39,13 +39,25 @@ namespace Com.MyCompany.MyGame
                 {
                     Debug.LogFormat("Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
                     // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-                    Vector3 spawnPosition = new Vector3(Random.Range(-5, 5), 40.0f, Random.Range(-5, 5));
-                    RaycastHit hitInfo;
-                    if (Physics.Raycast(spawnPosition, Vector3.down, out hitInfo, Mathf.Infinity))
+                    bool validPositionGenerated = false;
+                    Vector3 spawnPosition = Vector3.zero;
+                    //keep generating a valid position to spawn
+                    while (!validPositionGenerated)
                     {
-                        spawnPosition.y = hitInfo.point.y;
-                        PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPosition, Quaternion.identity, 0);
+                        spawnPosition = new Vector3(Random.Range(-5, 5), 40.0f, Random.Range(-5, 5));
+                        RaycastHit hitInfo;
+                        if (Physics.Raycast(spawnPosition, Vector3.down, out hitInfo, Mathf.Infinity))
+                        {
+                            //check hit tree or not
+                            float terrainPosY = Terrain.activeTerrain.SampleHeight(transform.position);
+                            if ((hitInfo.point.y - terrainPosY) < 5)
+                            {
+                                spawnPosition.y = hitInfo.point.y;
+                                validPositionGenerated = true;
+                            }
+                        }
                     }
+                    PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPosition, Quaternion.identity, 0);
                 }
                 else
                 {

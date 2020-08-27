@@ -191,7 +191,7 @@ public class MonsterController : MonoBehaviourPun
         targetGO = null;
         for (int i = 0; i<playerGOs.Length; i++)
         {
-            if(playerGOs[i] && agent)
+            if(playerGOs[i] && agent && playerGOs[i].GetComponent<NetworkPlayerManager>().getHealth() > 0)
             {
                 Vector3 direction = playerGOs[i].transform.position - transform.position;
                 if (direction.magnitude < 20 && direction.magnitude < nearestDistance)
@@ -217,14 +217,18 @@ public class MonsterController : MonoBehaviourPun
         if (targetGO && agent)
         {
             //Debug.Log("move");
-            agent.isStopped = false;
-            agent.SetDestination(targetGO.transform.position);
+            if (targetGO.GetComponent<NetworkPlayerManager>().getHealth() > 0)
+            {
+                agent.isStopped = false;
+                agent.SetDestination(targetGO.transform.position);
+            }
         }
     }
 
     public void Attack()
     {
         if (!targetGO) return;
+        if (targetGO.GetComponent<NetworkPlayerManager>().getHealth() <= 0) return;
         if (canAttack) { DoAttack(); }
         if (agent)
             agent.isStopped = true;
@@ -235,6 +239,7 @@ public class MonsterController : MonoBehaviourPun
     {
         if (wanderTimer > 5)
         {
+            agent.isStopped = false;
             Vector3 randomNearbyPosition = new Vector3(transform.position.x + Random.Range(-20, 20),
                                                         100,
                                                         transform.position.z + Random.Range(-20, 20));
@@ -258,8 +263,14 @@ public class MonsterController : MonoBehaviourPun
 
         if (targetGO)
         {
-            if(targetGO.GetComponent<NetworkPlayerManager>())
+            if (targetGO.GetComponent<NetworkPlayerManager>())
+            {
                 targetGO.GetComponent<NetworkPlayerManager>().TakeDamage(10);
+                if (targetGO.GetComponent<NetworkPlayerManager>().getHealth() <= 0)
+                {
+                    currentState = MonsterState.Wander;
+                }
+            }
         }
         canAttack = false;
         attackCoolDownTimer = 0.0f;
