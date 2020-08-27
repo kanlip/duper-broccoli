@@ -212,6 +212,7 @@ namespace Com.MyCompany.MyGame
                         npam.DoDeadAnimation();
                         npam.isDead = true;
                     }
+                    Cursor.lockState = CursorLockMode.None;
                 }
             }
 

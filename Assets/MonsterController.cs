@@ -197,7 +197,6 @@ public class MonsterController : MonoBehaviourPun
                 if (direction.magnitude < 20 && direction.magnitude < nearestDistance)
                 {
                     nearestDistance = direction.magnitude;
-                    agent.isStopped = false;
                     targetGO = playerGOs[i];
                     direction.y = 0;
                     transform.rotation = Quaternion.LookRotation(direction);
@@ -218,6 +217,7 @@ public class MonsterController : MonoBehaviourPun
         if (targetGO && agent)
         {
             //Debug.Log("move");
+            agent.isStopped = false;
             agent.SetDestination(targetGO.transform.position);
         }
     }
