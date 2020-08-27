@@ -135,7 +135,6 @@ public class MonsterController : MonoBehaviourPun
             canAttack = false;
             gameObject.GetComponent<NavMeshAgent>().enabled = false;
         }
-        Seek();
     }
 
     public void DoThink()
@@ -147,7 +146,6 @@ public class MonsterController : MonoBehaviourPun
         AcquireTargetPlayer();
         if (!targetGO)
         {
-            
             if (currentState != MonsterState.Wander)
             {
                 currentState = MonsterState.Idle;
