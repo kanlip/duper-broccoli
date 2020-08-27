@@ -23,7 +23,7 @@ namespace Com.MyCompany.MyGame
 
     /// <summary>
     /// Network Player manager.
-    /// Handles fire Input and Beams.
+    /// Handles fire Input
     /// </summary>
     public class NetworkPlayerManager : MonoBehaviourPunCallbacks, IPunObservable
     {
@@ -133,7 +133,8 @@ namespace Com.MyCompany.MyGame
                 if (cam != null)
                 {
 #if !(UNITY_ANDROID || UNITY_IOS)
-                    this.GetComponent<TPSCamera>().enabled = true;
+                    if(this.GetComponent<TPSCamera>() && photonView.IsMine)
+                        this.GetComponent<TPSCamera>().enabled = true;
 
 #endif
 
@@ -210,41 +211,39 @@ namespace Com.MyCompany.MyGame
         public void Update()
         {
             elapsedTime += Time.deltaTime;
+
+
             // we only process Inputs and check health if we are the local player
-            if (photonView.IsMine && !isDead)
+            if (!isDead && photonView.IsMine)
             {
                 if (elapsedTime > 1.7f) { TPSCamInitFinished = true; }
                 if (TPSCamInitFinished) { this.ProcessInputs(); }
+
 
                 if (this.Health <= 0f)
                 {
                     //play dead
                     isDead = true;
-                    
+
                     if (npam)
                     {
                         npam.DoDeadAnimation();
-
-                        npam.enabled = false;
+                        npam.isDead = true;
                     }
-                    
-                    if (flc)
-                    {
-                        flc.enabled = false;
-                    }
-
-                    
                 }
-
-                
-                //NetworkGameManager.Instance.LeaveRoom();
             }
 
             if(isDead)
             {
+                if (flc && photonView.IsMine)
+                {
+                    flc.enabled = false;
+                }
                 //show the game over panel
-                if(gameOverPanel)
+                if (gameOverPanel)
                     gameOverPanel.SetActive(true);
+
+                //NetworkGameManager.Instance.LeaveRoom();
             }
 
             //if (this.beams != null && this.IsFiring != this.beams.activeInHierarchy)
@@ -349,9 +348,11 @@ namespace Com.MyCompany.MyGame
         }
 #endif
         [PunRPC]
-        public void Shoot()
+        public void Shoot(Quaternion shootRotation)
         {
-            GameObject arrow = Instantiate(arrowPrefab, arrowSpawn.position, arrowSpawn.transform.rotation);
+            
+            GameObject arrow = Instantiate(arrowPrefab, arrowSpawn.position, arrowSpawn.rotation);
+            arrow.transform.rotation = shootRotation;
             arrow.GetComponent<Arrow>().SetOwner(this.gameObject);
             //shooting sound
             shootSound = GameObject.FindWithTag("ShootSound");
@@ -370,6 +371,7 @@ namespace Com.MyCompany.MyGame
         //    }
         //}
         Quaternion lookDirection;
+        Vector3 fireDirection;
         /// <summary>
         /// Processes the inputs. This MUST ONLY BE USED when the player has authority over this Networked GameObject (photonView.isMine == true)
         /// </summary>
@@ -396,34 +398,35 @@ namespace Com.MyCompany.MyGame
 
 
 
-            //if (!isDead)
-            //{
-            //    var mouseMove = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
-            //    mouseMove = Vector2.Scale(mouseMove, new Vector2(SENS_HOR, SENS_VER));
 
-            //    transform.Rotate(0, mouseMove.x, 0);
-            //}
-            //transform.Rotate(-mouseMove.y, 0, 0);
-            //Camera.main.transform.Rotate(-mouseMove.y, 0, 0);
 
 #else
             if (Input.GetButtonDown("Fire1") && elapsedTime > fireCoolDown)
             {
                 //Camera cam = Camera.main;
-                //Ray rayOrigin = Camera.main.ScreenPointToRay(Input.mousePosition);
-                //RaycastHit hitInfo;
 
-                //if(Physics.Raycast(rayOrigin, out hitInfo))
+                //RaycastHit hitInfo;
+                //Ray rayOrigin = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+
+
+                //if (Physics.Raycast(arrowSpawn.transform.position, arrowSpawn.transform.forward, out hitInfo))
                 //{
                 //    arrowSpawn.transform.LookAt(hitInfo.point);
                 //}
+
+                //if (Physics.Raycast(rayOrigin, out hitInfo))
+                //{
+                //    arrowSpawn.transform.LookAt(hitInfo.point);
+                //}
+
 
                 //if (Physics.Raycast(arrowSpawn.transform.position, arrowSpawn.transform.up, out hitInfo, Mathf.Infinity))
                 //{
                 //    lookDirection = Quaternion.LookRotation(rayOrigin.direction);
                 //}
 
-                this.GetComponent<PhotonView>().RPC("Shoot", RpcTarget.All);
+                this.GetComponent<PhotonView>().RPC("Shoot", RpcTarget.All, GameObject.Find("Pivot").transform.rotation);
                 elapsedTime = 0;
             }
 
@@ -451,6 +454,14 @@ namespace Com.MyCompany.MyGame
                 }
             }
             */
+            
+            var mouseMove = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
+            mouseMove = Vector2.Scale(mouseMove, new Vector2(SENS_HOR, SENS_VER));
+
+            transform.Rotate(0, mouseMove.x, 0);
+            
+            //transform.Rotate(-mouseMove.y, 0, 0);
+            //Camera.main.transform.Rotate(-mouseMove.y, 0, 0);
 
 #endif
             if (Input.GetKeyDown(KeyCode.Escape))

@@ -36,6 +36,8 @@ namespace Com.MyCompany.MyGame
         GameObject attackButton;
         private float vMobileMove;
         private float hMobileMove;
+
+        public bool isDead = false;
         #endregion
 
         #region MonoBehaviour CallBacks
@@ -64,7 +66,7 @@ namespace Com.MyCompany.MyGame
 	        }
 
 			// failSafe is missing Animator component on GameObject
-	        if (!animator)
+	        if (!animator || isDead)
 	        {
 				return;
 			}

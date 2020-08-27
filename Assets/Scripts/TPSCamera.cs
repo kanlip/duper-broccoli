@@ -42,7 +42,7 @@ public class TPSCamera : MonoBehaviourPunCallbacks
 #if !(UNITY_ANDROID || UNITY_IOS)
                 if (cam)
                 {
-                    cam.transform.position = new Vector3(0, 0, -4);
+                    cam.transform.position = new Vector3(0, 2, -4);
                     cam.transform.rotation = Quaternion.identity;
                     cam.transform.SetParent(GameObject.Find("Pivot").GetComponent<Transform>(), false);
                 }
@@ -55,6 +55,11 @@ public class TPSCamera : MonoBehaviourPunCallbacks
 #endif
             }
         }
+    }
+
+    void update()
+    {
+        
     }
 
     void createMainCamera()

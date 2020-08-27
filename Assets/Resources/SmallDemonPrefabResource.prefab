@@ -1672,7 +1672,7 @@ MonoBehaviour:
   prefixField: -1
   observableSearch: 2
   Synchronization: 3
-  OwnershipTransfer: 0
+  OwnershipTransfer: 1
   ObservedComponents:
   - {fileID: 2747434433708146868}
   - {fileID: 491139301213497118}
@@ -1745,9 +1745,11 @@ MonoBehaviour:
   Exp: 5
   MovementSpeed: 0
   AttackSpeed: 0
+  isDead: 0
   currentState: 0
   enemyUIPrefab: {fileID: 6258586399017396571, guid: 46817af115315364a8eb0e019c1d24ab,
     type: 3}
+  targetGO: {fileID: 0}
 --- !u!54 &-5553570153588243791
 Rigidbody:
   m_ObjectHideFlags: 0

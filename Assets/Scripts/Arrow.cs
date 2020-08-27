@@ -55,7 +55,7 @@ namespace Com.MyCompany.MyGame
 
         public void OnTriggerEnter(Collider other)
         {
-            int damageAmount = 10;
+            int damageAmount = 25;
             if (other.gameObject.tag == "Player" && other.gameObject != owner)
             {
                 collidedGameObj = other.gameObject;

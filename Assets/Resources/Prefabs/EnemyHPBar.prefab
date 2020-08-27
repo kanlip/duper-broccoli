@@ -395,7 +395,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyHealthSlider: {fileID: 3154647826275838516}
-  screenOffset: {x: 0, y: 90, z: 0}
+  screenOffset: {x: 0, y: 30, z: 0}
 --- !u!1 &7041251418087537246
 GameObject:
   m_ObjectHideFlags: 0
