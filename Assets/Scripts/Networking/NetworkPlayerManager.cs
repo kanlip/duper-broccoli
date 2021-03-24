@@ -169,6 +169,9 @@ namespace Com.MyCompany.MyGame
 
             cameraMove = GameObject.Find("Pivot");
 
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+
 #if UNITY_5_4_OR_NEWER
             // Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
@@ -415,13 +418,16 @@ namespace Com.MyCompany.MyGame
             mouseMove = Vector2.Scale(mouseMove, new Vector2(SENS_HOR, SENS_VER));
 
             transform.Rotate(0, mouseMove.x, 0);
-            
+
             //transform.Rotate(-mouseMove.y, 0, 0);
             //Camera.main.transform.Rotate(-mouseMove.y, 0, 0);
 
 #endif
             if (Input.GetKeyDown(KeyCode.Escape))
-                Cursor.lockState = CursorLockMode.None;
+            {
+                Cursor.lockState = (Cursor.lockState == CursorLockMode.None) ? CursorLockMode.Locked : CursorLockMode.None;
+                Cursor.visible = !Cursor.visible;
+            }
         }
 
 #endregion
@@ -433,12 +439,14 @@ namespace Com.MyCompany.MyGame
             if (stream.IsWriting)
             {
                 // We own this player: send the others our data
+                stream.SendNext(this.isDead);
                 stream.SendNext(this.IsFiring);
                 stream.SendNext(this.Health);
             }
             else
             {
                 // Network player, receive data
+                this.isDead = (bool)stream.ReceiveNext();
                 this.IsFiring = (bool)stream.ReceiveNext();
                 this.Health = (float)stream.ReceiveNext();
             }
